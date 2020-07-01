@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMSDesktop", "AMSDesktop.csproj", "{2CFDA442-AE21-4775-850F-DFB5E574A7D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMSDesktop.UnitTest", "..\AMSDesktop.UnitTest\AMSDesktop.UnitTest.csproj", "{19629454-5407-430C-88E5-93749B662E21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CFDA442-AE21-4775-850F-DFB5E574A7D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CFDA442-AE21-4775-850F-DFB5E574A7D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CFDA442-AE21-4775-850F-DFB5E574A7D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CFDA442-AE21-4775-850F-DFB5E574A7D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19629454-5407-430C-88E5-93749B662E21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19629454-5407-430C-88E5-93749B662E21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19629454-5407-430C-88E5-93749B662E21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19629454-5407-430C-88E5-93749B662E21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91A42716-9092-4456-8D33-1BCB8DBFF460}
+	EndGlobalSection
+EndGlobal

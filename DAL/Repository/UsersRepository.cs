@@ -11,10 +11,10 @@ using System.Data;
 
 namespace AMSDesktop.DAL.Repository
 {
-    public class UserRepository
+    public class UsersRepository
     {
         private string connectionString;
-        public UserRepository()
+        public UsersRepository()
         {
             connectionString = ConfigurationManager.ConnectionStrings["AMSDesktop.Properties.Settings.amsdbConnectionString"].ConnectionString;
         }
@@ -56,7 +56,7 @@ namespace AMSDesktop.DAL.Repository
         public User GetUser(string username)
         {
             User user = new User();
-            string sqlCommand = @"select Username, Firstname, Lastname from users where username = @param1";
+            string sqlCommand = @"select * from users where username = @param1";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 OleDbCommand command = new OleDbCommand(sqlCommand, con);
@@ -73,46 +73,13 @@ namespace AMSDesktop.DAL.Repository
                                 Username = reader["Username"].ToString(),
                                 Firstname = reader["Firstname"].ToString(),
                                 Lastname = reader["Lastname"].ToString(),
+                                Password = reader["Password"].ToString(),
+                                Salt = reader["Salt"].ToString()
                             };
+
+                            return user;
                         }
 
-                        return user;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new NotImplementedException();
-                }
-            }
-        }
-
-        public User IsAuthenticatedUser(string username, string password)
-        {
-            User user;
-            string sqlCommand = @"select * from users where username = @param1";
-            using (OleDbConnection con = new OleDbConnection(connectionString))
-            {
-                OleDbCommand command = new OleDbCommand(sqlCommand, con);
-                try
-                {
-                    command.Parameters.AddWithValue("@param1", username);
-                    con.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
-                    {
-                        if (reader.Read())
-                        {
-                            CryptographyHelper ch = new CryptographyHelper();
-                            if (reader["Password"].ToString() == ch.GetHashedString(password + reader["Salt"]))
-                            {
-                                user = new User()
-                                {
-                                    Username = reader["Username"].ToString(),
-                                    Firstname = reader["Firstname"].ToString(),
-                                    Lastname = reader["Lastname"].ToString(),
-                                };
-                                return user;
-                            }
-                        }
                         return null;
                     }
                 }

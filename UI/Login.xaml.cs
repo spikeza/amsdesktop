@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AMSDesktop.DAL.Repository;
+using AMSDesktop.BLL;
 using AMSDesktop.DAL.Model;
 
 namespace AMSDesktop.UI
@@ -29,7 +30,7 @@ namespace AMSDesktop.UI
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            CurrentUser = new UserRepository().IsAuthenticatedUser(tbxUsername.Text, pwbPassword.Password);
+            CurrentUser = new UsersLogic().IsAuthenticatedUser(tbxUsername.Text, pwbPassword.Password);
             if (CurrentUser != null)
             {
                 this.DialogResult = true;

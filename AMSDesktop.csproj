@@ -61,6 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BLL\UsersLogic.cs" />
     <Compile Include="UI\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -78,7 +79,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DAL\Model\User.cs" />
-    <Compile Include="DAL\Repository\UserRepository.cs" />
+    <Compile Include="DAL\Repository\UsersRepository.cs" />
     <Compile Include="Helpers\CryptographyHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -126,9 +127,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BLL\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="DAL\Database\amsdb.accdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

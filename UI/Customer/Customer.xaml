@@ -1,0 +1,32 @@
+﻿<Window x:Name="wCustomer" x:Class="AMSDesktop.UI.Customer.Customer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AMSDesktop.UI.Customer"
+        Style="{StaticResource FontStyle}"
+        mc:Ignorable="d"
+        Title="จัดการข้อมูลผู้เช่า" Height="500" Width="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <WrapPanel HorizontalAlignment="Center">
+                <Label Content="ค้นหาชื่อผู้เช่า" Margin="0,20,0,0"/>
+                <TextBox x:Name="tbxSearchValue" Width="300" Margin="0, 20, 0, 0" KeyDown="tbxSearchValue_KeyDown"/>
+                <Button x:Name="btnSearch" Content="ค้นหา" Margin="10, 20, 10, 0" Width="100" Height="30" Click="btnSearch_Click"/>
+            </WrapPanel>
+            <DataGrid x:Name="dgCustomers" Height="300" Width="600" Margin="0,20,0,20" AutoGenerateColumns="False" HorizontalAlignment="Center" IsReadOnly="True" MouseDoubleClick="dgCustomers_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ชื่อผู้เช่า" Binding="{Binding ContactName}"/>
+                    <DataGridTextColumn Header="เลขประจำตัวประชาชน" Binding="{Binding CardId}"/>
+                    <DataGridTextColumn Header="ที่อยู่" Binding="{Binding Address}"/>
+                    <DataGridTextColumn Header="เบอร์โทรศัพท์" Binding="{Binding Tel}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <WrapPanel HorizontalAlignment="Center">
+                <Button x:Name="btnAdd" Content="เพิ่มข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnAdd_Click"/>
+                <Button x:Name="btnEdit" Content="แก้ไขข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnEdit_Click"/>
+                <Button x:Name="btnDelete" Content="ลบข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnDelete_Click"/>
+            </WrapPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>

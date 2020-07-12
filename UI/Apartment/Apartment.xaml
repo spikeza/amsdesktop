@@ -1,0 +1,27 @@
+﻿<Window x:Class="AMSDesktop.UI.Apartment.Apartment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AMSDesktop.UI.Apartment"
+        mc:Ignorable="d"
+        Title="จัดการข้อมูลอพารต์เมนต์" Height="450" Width="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <DataGrid x:Name="dgApartments" Margin="10,20,10,0" HorizontalAlignment="Center" AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="dgApartments_MouseDoubleClick">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ชื่ออพาร์ตเมนต์" Binding="{Binding ApartmentName}" />
+                    <DataGridTextColumn Header="ที่อยู่" Binding="{Binding Address}" />
+                    <DataGridTextColumn Header="ชื่อบริษัท" Binding="{Binding CompanyName}" />
+                    <DataGridTextColumn Header="เลขประจำตัวผู้เสียภาษี" Binding="{Binding TaxId}" />
+                    <DataGridTextColumn Header="เบอร์โทรศัพท์" Binding="{Binding Tel}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <WrapPanel HorizontalAlignment="Center" Margin="0,20,0,20">
+                <Button x:Name="btnAdd" Content="เพิ่มข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnAdd_Click"/>
+                <Button x:Name="btnEdit" Content="แก้ไขข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnEdit_Click"/>
+                <Button x:Name="btnDelete" Content="ลบข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnDelete_Click"/>
+            </WrapPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>

@@ -46,7 +46,7 @@ namespace AMSDesktop.DAL.Repository
                     }
                     return users;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw new NotImplementedException();
                 }
@@ -55,7 +55,7 @@ namespace AMSDesktop.DAL.Repository
 
         public User GetUser(string username)
         {
-            User user = new User();
+            User user;
             string sqlCommand = @"select * from users where username = @param1";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -83,7 +83,7 @@ namespace AMSDesktop.DAL.Repository
                         return null;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw new NotImplementedException();
                 }

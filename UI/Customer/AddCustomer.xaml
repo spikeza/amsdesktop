@@ -1,0 +1,23 @@
+﻿<Window x:Class="AMSDesktop.UI.Customer.AddCustomer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AMSDesktop.UI.Customer"
+        mc:Ignorable="d"
+        Style="{StaticResource FontStyle}"
+        Title="AddCustomer" Height= "180" Width="800">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="10,20,10,20">
+            <WrapPanel Margin="0,10,0,10" HorizontalAlignment="Center">
+                <Label Content="ชื่อผู้เช่า" Width="100"/>
+                <TextBox x:Name="tbxContactName" Width="300" />
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center">
+                <Button x:Name="btnAdd" Content="เพิ่มข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnAdd_Click"/>
+                <Button x:Name="btnClear" Content="ล้างข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnClear_Click"/>
+                <Button x:Name="btnCancel" Content="ยกเลิก" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnCancel_Click"/>
+            </WrapPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>

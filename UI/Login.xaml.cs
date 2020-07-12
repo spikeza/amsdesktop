@@ -22,23 +22,59 @@ namespace AMSDesktop.UI
     /// </summary>
     public partial class Login : Window
     {
-        public User CurrentUser { get; set; }
         public Login()
         {
             InitializeComponent();
+            PopulateApartmentComboBox();
         }
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            CurrentUser = new UsersLogic().IsAuthenticatedUser(tbxUsername.Text, pwbPassword.Password);
-            if (CurrentUser != null)
+            ValidateUser(tbxUsername.Text, pwbPassword.Password);
+        }
+
+        private void pwbPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
             {
-                this.DialogResult = true;
+                ValidateUser(tbxUsername.Text, pwbPassword.Password);
+            }
+        }
+
+        private void ValidateUser(string username, string password)
+        {
+            if (cbxApartment.SelectedItem != null)
+            {
+                Global.CurrentApartment = new ApartmentsLogic().GetApartment(long.Parse(cbxApartment.SelectedValue.ToString()));
+                Global.CurrentUser = new UsersLogic().IsAuthenticatedUser(username, password);
+                if (Global.CurrentUser != null)
+                {
+                    this.DialogResult = true;
+                }
+                else
+                {
+                    MessageBox.Show("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+                }
             }
             else
             {
-                MessageBox.Show("Invalid Username or Password");
+                MessageBox.Show("กรุณาเลือกอพาร์ตเมนต์ที่ต้องการจัดการ");
             }
+            
+        }
+
+        private void wLogin_Loaded(object sender, RoutedEventArgs e)
+        {
+            tbxUsername.Focus();
+        }
+
+        private void PopulateApartmentComboBox()
+        {
+            ApartmentsLogic al = new ApartmentsLogic();
+            cbxApartment.ItemsSource = al.GetApartments();
+            cbxApartment.DisplayMemberPath = "ApartmentName";
+            cbxApartment.SelectedValuePath = "ApartmentId";
+            cbxApartment.SelectedValue = 1;
         }
     }
 }

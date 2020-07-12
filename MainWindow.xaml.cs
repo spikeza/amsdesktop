@@ -12,9 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using AMSDesktop.UI;
+using UI = AMSDesktop.UI;
 using AMSDesktop.DAL.Repository;
-using AMSDesktop.DAL.Model;
+using Model = AMSDesktop.DAL.Model;
 
 namespace AMSDesktop
 {
@@ -23,16 +23,38 @@ namespace AMSDesktop
     /// </summary>
     public partial class MainWindow : Window
     {
-        public User CurrentUser { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            Login loginWindow = new Login();
+            UI.Login loginWindow = new UI.Login();
             if (loginWindow.ShowDialog() == true)
             {
-                this.CurrentUser = loginWindow.CurrentUser;
+                this.Title = "ยินดีต้อนรับ " + Global.CurrentUser.Firstname;
             }
-            this.Title = "Welcome " + CurrentUser.Firstname;
+            else
+            {
+                MessageBox.Show("กรุณาลงชื่อเข้าสู่ระบบเพื่อใช้งาน");
+                this.Close();
+            }
+
+        }
+
+        private void mSelectApartment_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Apartment.SelectApartment selectApartmentWindow = new UI.Apartment.SelectApartment();
+            selectApartmentWindow.ShowDialog();
+        }
+
+        private void mApartmentData_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Apartment.Apartment apartmentWindow = new UI.Apartment.Apartment();
+            apartmentWindow.ShowDialog();
+        }
+
+        private void mCustomerData_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Customer.Customer customerWindow = new UI.Customer.Customer();
+            customerWindow.ShowDialog();
         }
     }
 }

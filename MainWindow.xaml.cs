@@ -56,5 +56,11 @@ namespace AMSDesktop
             UI.Customer.Customer customerWindow = new UI.Customer.Customer();
             customerWindow.ShowDialog();
         }
+
+        private void mRoomData_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Room.Room roomWindow = new UI.Room.Room();
+            roomWindow.ShowDialog();
+        }
     }
 }

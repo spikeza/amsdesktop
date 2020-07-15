@@ -68,3 +68,37 @@ E:\My Projects\amsdesktop\obj\Debug\UI\Customer\AddCustomer.baml
 E:\My Projects\amsdesktop\obj\Debug\UI\Customer\UpdateCustomer.baml
 E:\My Projects\amsdesktop\obj\Debug\UI\Apartment\SelectApartment.g.cs
 E:\My Projects\amsdesktop\obj\Debug\UI\Apartment\SelectApartment.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\cs-CZ\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\AddApartment.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\Apartment.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\SelectApartment.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\UpdateApartment.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Customer\AddCustomer.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Customer\Customer.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Customer\UpdateCustomer.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\App.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\AddApartment.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\Apartment.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\SelectApartment.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Apartment\UpdateApartment.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Customer\AddCustomer.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Customer\Customer.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Customer\UpdateCustomer.baml
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\AMSDesktop.csproj.CopyComplete
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Room\Room.g.cs
+C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Room\Room.baml

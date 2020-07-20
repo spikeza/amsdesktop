@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AMSDesktop.BLL;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using AMSDesktop.DAL.Repository;
 using Model = AMSDesktop.DAL.Model;
-using AMSDesktop.BLL;
 
 namespace AMSDesktop.UI.Customer
 {
@@ -25,19 +14,19 @@ namespace AMSDesktop.UI.Customer
         public Customer()
         {
             InitializeComponent();
-            dgCustomers.ItemsSource = new CustomersRepository().GetCustomers();
+            dgCustomers.ItemsSource = new CustomersLogic().GetCustomers();
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            dgCustomers.ItemsSource = new CustomersRepository().SearchCustomers(tbxSearchValue.Text);
+            dgCustomers.ItemsSource = new CustomersLogic().SearchCustomers(tbxSearchValue.Text);
         }
 
         private void tbxSearchValue_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                dgCustomers.ItemsSource = new CustomersRepository().SearchCustomers(tbxSearchValue.Text);
+                dgCustomers.ItemsSource = new CustomersLogic().SearchCustomers(tbxSearchValue.Text);
             }
         }
 
@@ -46,7 +35,7 @@ namespace AMSDesktop.UI.Customer
             AddCustomer addCustomerWindow = new AddCustomer();
             if (addCustomerWindow.ShowDialog() == true)
             {
-                dgCustomers.ItemsSource = new CustomersRepository().GetCustomers();
+                dgCustomers.ItemsSource = new CustomersLogic().GetCustomers();
             }
         }
 
@@ -58,8 +47,8 @@ namespace AMSDesktop.UI.Customer
                 if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
                 {
                     DataGridRow row = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
-                    var selectedApartment = row.Item as Model.Customer;
-                    UpdateCustomerData(selectedApartment);
+                    var selectedCustomer = row.Item as Model.Customer;
+                    UpdateCustomerData(selectedCustomer);
                 }
             }
         }

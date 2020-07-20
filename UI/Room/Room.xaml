@@ -28,8 +28,8 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="เลขที่ห้อง" Binding="{Binding RoomNo}"/>
                         <DataGridTextColumn Header="ชั้น" Binding="{Binding Floor}"/>
-                        <DataGridTextColumn Header="ค่าเช่ารายเดือน" Binding="{Binding MonthCost}"/>
-                        <DataGridTextColumn Header="ผู้เช่า" Binding="{Binding CustomerId}"/>
+                        <DataGridTextColumn Header="ค่าเช่ารายเดือน" Binding="{Binding MonthCost, ConverterCulture='th-TH' ,StringFormat=c}"/>
+                        <DataGridTextColumn Header="ผู้เช่า" Binding="{Binding ContactName}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </WrapPanel>

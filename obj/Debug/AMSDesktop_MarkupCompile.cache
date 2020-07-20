@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\
+E:\My Projects\amsdesktop\obj\Debug\
 AMSDesktop
 none
 false
 DEBUG;TRACE
-C:\Users\KIT\Source\Repos\AMSDesktop\App.xaml
+E:\My Projects\amsdesktop\App.xaml
 101180925003
 1-1945840668
-25-1382967893
-22745069677
+28356062523
+2219223150
 MainWindow.xaml;UI\Apartment\AddApartment.xaml;UI\Apartment\Apartment.xaml;UI\Apartment\SelectApartment.xaml;UI\Apartment\UpdateApartment.xaml;UI\Customer\AddCustomer.xaml;UI\Customer\Customer.xaml;UI\Customer\UpdateCustomer.xaml;UI\Login.xaml;UI\Room\Room.xaml;
 
 False

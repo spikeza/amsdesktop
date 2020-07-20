@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AMSDesktop.BLL;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Model = AMSDesktop.DAL.Model;
 
 namespace AMSDesktop.UI.Room
 {
@@ -22,11 +14,26 @@ namespace AMSDesktop.UI.Room
         public Room()
         {
             InitializeComponent();
+            dgRooms.ItemsSource = new RoomsLogic().GetRooms(Global.CurrentApartment.ApartmentId);
         }
 
         private void dgRooms_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (sender != null)
+            {
+                DataGrid grid = sender as DataGrid;
+                if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
+                {
+                    DataGridRow row = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                    var selectedRoom = row.Item as Model.Room;
+                    UpdateRoomData(selectedRoom);
+                }
+            }
+        }
 
+        private void UpdateRoomData(Model.Room room)
+        {
+            
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)

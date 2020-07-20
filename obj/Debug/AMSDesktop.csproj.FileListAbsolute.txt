@@ -102,3 +102,5 @@ C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Customer\UpdateCustomer.baml
 C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\AMSDesktop.csproj.CopyComplete
 C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Room\Room.g.cs
 C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Room\Room.baml
+E:\My Projects\amsdesktop\obj\Debug\UI\Room\Room.g.cs
+E:\My Projects\amsdesktop\obj\Debug\UI\Room\Room.baml

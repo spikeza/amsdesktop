@@ -78,11 +78,14 @@
     </ApplicationDefinition>
     <Compile Include="BLL\ApartmentsLogic.cs" />
     <Compile Include="BLL\CustomersLogic.cs" />
+    <Compile Include="BLL\RoomsLogic.cs" />
     <Compile Include="BLL\UsersLogic.cs" />
     <Compile Include="DAL\Model\Apartment.cs" />
     <Compile Include="DAL\Model\Customer.cs" />
+    <Compile Include="DAL\Model\Room.cs" />
     <Compile Include="DAL\Repository\ApartmentsRepository.cs" />
     <Compile Include="DAL\Repository\CustomersRepository.cs" />
+    <Compile Include="DAL\Repository\RoomsRepository.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="UI\Apartment\AddApartment.xaml.cs">
       <DependentUpon>AddApartment.xaml</DependentUpon>

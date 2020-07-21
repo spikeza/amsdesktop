@@ -50,5 +50,18 @@ namespace AMSDesktop.UI.Room
         {
 
         }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            dgRooms.ItemsSource = new RoomsLogic().SearchRooms(tbxSearchValue.Text, Global.CurrentApartment.ApartmentId);
+        }
+
+        private void tbxSearchValue_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                dgRooms.ItemsSource = new RoomsLogic().SearchRooms(tbxSearchValue.Text, Global.CurrentApartment.ApartmentId);
+            }
+        }
     }
 }

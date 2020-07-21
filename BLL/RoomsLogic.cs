@@ -39,9 +39,9 @@ namespace AMSDesktop.BLL
             new RoomsRepository().DeleteRoom(room);
         }
 
-        public List<Room> SearchRoom(string searchValue)
+        public List<Room> SearchRooms(string searchValue, long apartmentId)
         {
-            return new RoomsRepository().SearchRooms(searchValue);
+            return new RoomsRepository().SearchRooms(searchValue, apartmentId);
         }
     }
 }

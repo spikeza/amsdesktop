@@ -248,50 +248,20 @@ namespace AMSDesktop.DAL.Repository
             }
         }
 
-        public List<Room> SearchRooms(string searchValue)
+        public List<Room> SearchRooms(string searchValue, long apartmentId)
         {
-            List<Room> rooms = new List<Room>();
-            string sqlCommand = @"select * from rooms where RoomId = @RoomId or ContractName like @ContactName";
-            using (OleDbConnection con = new OleDbConnection(connectionString))
+            try
             {
-                OleDbCommand command = new OleDbCommand(sqlCommand, con);
-                try
-                {
-                    command.Parameters.AddWithValue("@RoomId", searchValue);
-                    command.Parameters.AddWithValue("@ContactName", "%" + searchValue + "%");
-                    con.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
-                    {
-                        foreach (var item in reader)
-                        {
-                            Room r = new Room()
-                            {
-                                RoomId = long.Parse(reader["RoomId"].ToString()),
-                                RoomNo = reader["RoomNo"].ToString(),
-                                CustomerId = long.Parse(reader["CustomerId"].ToString()),
-                                WUnitStart = long.Parse(reader["WUnitStart"].ToString()),
-                                EUnitStart = long.Parse(reader["EUnitStart"].ToString()),
-                                MonthCost = Decimal.Parse(reader["MonthCost"].ToString()),
-                                InsureCost = Decimal.Parse(reader["InsureCost"].ToString()),
-                                StartDate = reader["StartDate"].ToString() != "" ? DateTime.Parse(reader["StartDate"].ToString()) : (DateTime?)null,
-                                ApartmentId = long.Parse(reader["ApartMentId"].ToString()),
-                                Floor = reader["Floor"].ToString(),
-                                Picture = reader["Picture"].ToString(),
-                                ContractMonth = long.Parse(reader["ContractMonth"].ToString()),
-                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString())
-                            };
-                            rooms.Add(r);
-                        }
+                List<Room> rooms = GetRooms(apartmentId);
+                rooms = rooms.Where(r => r.RoomNo.ToLowerInvariant().Contains(searchValue.ToLowerInvariant()) || r.ContactName.ToLowerInvariant().Contains(searchValue.ToLowerInvariant())).ToList<Room>();
 
-                        return rooms;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-
+                return rooms;
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
     }
 

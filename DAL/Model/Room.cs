@@ -10,8 +10,7 @@ namespace AMSDesktop.DAL.Model
     {
         public long RoomId { get; set; }
         public string RoomNo { get; set; }
-        public long CustomerId { get; set; }
-        public string ContactName { get; set; }
+        public Customer Customer { get; set; }
         public long WUnitStart { get; set; }
         public long EUnitStart { get; set; }
         public Decimal MonthCost { get; set; }
@@ -22,5 +21,6 @@ namespace AMSDesktop.DAL.Model
         public string Picture { get; set; }
         public long ContractMonth { get; set; }
         public bool LandTaxedPerson { get; set; }
+        public bool Available { get; set; }
     }
 }

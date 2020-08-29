@@ -104,3 +104,7 @@ C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Room\Room.g.cs
 C:\Users\KIT\Source\Repos\AMSDesktop\obj\Debug\UI\Room\Room.baml
 E:\My Projects\amsdesktop\obj\Debug\UI\Room\Room.g.cs
 E:\My Projects\amsdesktop\obj\Debug\UI\Room\Room.baml
+E:\My Projects\amsdesktop\obj\Debug\UI\Room\AddRoom.g.cs
+E:\My Projects\amsdesktop\obj\Debug\UI\Room\AddRoom.baml
+E:\My Projects\amsdesktop\obj\Debug\UI\Room\UpdateRoom.g.cs
+E:\My Projects\amsdesktop\obj\Debug\UI\Room\UpdateRoom.baml

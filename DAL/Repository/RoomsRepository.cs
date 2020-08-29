@@ -22,7 +22,7 @@ namespace AMSDesktop.DAL.Repository
         public List<Room> GetRooms()
         {
             List<Room> rooms = new List<Room>();
-            string sqlCommand = @"select * from rooms";
+            string sqlCommand = @"select * from rooms order by RoomNo";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 OleDbCommand command = new OleDbCommand(sqlCommand, con);
@@ -37,8 +37,7 @@ namespace AMSDesktop.DAL.Repository
                             {
                                 RoomId = long.Parse(reader["RoomId"].ToString()),
                                 RoomNo = reader["RoomNo"].ToString(),
-                                CustomerId = long.Parse(reader["CustomerId"].ToString()),
-                                ContactName = new CustomersRepository().GetCustomer(long.Parse(reader["CustomerId"].ToString())).ContactName,
+                                Customer = new CustomersRepository().GetCustomer(long.Parse(reader["CustomerId"].ToString())),
                                 WUnitStart = long.Parse(reader["WUnitStart"].ToString()),
                                 EUnitStart = long.Parse(reader["EUnitStart"].ToString()),
                                 MonthCost = Decimal.Parse(reader["MonthCost"].ToString()),
@@ -48,7 +47,8 @@ namespace AMSDesktop.DAL.Repository
                                 Floor = reader["Floor"].ToString(),
                                 Picture = reader["Picture"].ToString(),
                                 ContractMonth = long.Parse(reader["ContractMonth"].ToString()),
-                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString())
+                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString()),
+                                Available = bool.Parse(reader["Available"].ToString())
                             };
                             rooms.Add(r);
                         }
@@ -65,7 +65,7 @@ namespace AMSDesktop.DAL.Repository
         public List<Room> GetRooms(long apartmentId)
         {
             List<Room> rooms = new List<Room>();
-            string sqlCommand = @"select * from rooms where ApartmentId = @ApartmentId";
+            string sqlCommand = @"select * from rooms where ApartmentId = @ApartmentId order by RoomNo";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 OleDbCommand command = new OleDbCommand(sqlCommand, con);
@@ -81,8 +81,7 @@ namespace AMSDesktop.DAL.Repository
                             {
                                 RoomId = long.Parse(reader["RoomId"].ToString()),
                                 RoomNo = reader["RoomNo"].ToString(),
-                                CustomerId = long.Parse(reader["CustomerId"].ToString()),
-                                ContactName = new CustomersRepository().GetCustomer(long.Parse(reader["CustomerId"].ToString())).ContactName,
+                                Customer = new CustomersRepository().GetCustomer(long.Parse(reader["CustomerId"].ToString())),
                                 WUnitStart = long.Parse(reader["WUnitStart"].ToString()),
                                 EUnitStart = long.Parse(reader["EUnitStart"].ToString()),
                                 MonthCost = Decimal.Parse(reader["MonthCost"].ToString()),
@@ -92,7 +91,8 @@ namespace AMSDesktop.DAL.Repository
                                 Floor = reader["Floor"].ToString(),
                                 Picture = reader["Picture"].ToString(),
                                 ContractMonth = long.Parse(reader["ContractMonth"].ToString()),
-                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString())
+                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString()),
+                                Available = bool.Parse(reader["Available"].ToString())
                             };
                             rooms.Add(r);
                         }
@@ -125,8 +125,7 @@ namespace AMSDesktop.DAL.Repository
                             {
                                 RoomId = long.Parse(reader["RoomId"].ToString()),
                                 RoomNo = reader["RoomNo"].ToString(),
-                                CustomerId = long.Parse(reader["CustomerId"].ToString()),
-                                ContactName = new CustomersRepository().GetCustomer(long.Parse(reader["CustomerId"].ToString())).ContactName,
+                                Customer = new CustomersRepository().GetCustomer(long.Parse(reader["CustomerId"].ToString())),
                                 WUnitStart = long.Parse(reader["WUnitStart"].ToString()),
                                 EUnitStart = long.Parse(reader["EUnitStart"].ToString()),
                                 MonthCost = Decimal.Parse(reader["MonthCost"].ToString()),
@@ -136,7 +135,8 @@ namespace AMSDesktop.DAL.Repository
                                 Floor = reader["Floor"].ToString(),
                                 Picture = reader["Picture"].ToString(),
                                 ContractMonth = long.Parse(reader["ContractMonth"].ToString()),
-                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString())
+                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString()),
+                                Available = bool.Parse(reader["Available"].ToString())
                             };
 
                             return room;
@@ -154,8 +154,8 @@ namespace AMSDesktop.DAL.Repository
 
         public void AddRoom(Room room)
         {
-            string sqlCommand = "insert into rooms ([RoomNo], [CustomerId], [WUnitStart], [EUnitStart], [MonthCost], [InsureCost], [StartDate], [ApartmentId], [Floor], [Picture], [ContractMonth], [LandTaxedPerson]) " +
-                                "values(@RoomNo, @CustomerId, @WUnitStart, @EUnitStart, @MonthCost, @InsureCost, @StartDate, @ApartmentId, @Floor, @Picture, @ContractMonth, @LandTaxedPerson)";
+            string sqlCommand = "insert into rooms ([RoomNo], [CustomerId], [WUnitStart], [EUnitStart], [MonthCost], [InsureCost], [StartDate], [ApartmentId], [Floor], [Picture], [ContractMonth], [LandTaxedPerson], [Available]) " +
+                                "values(@RoomNo, @CustomerId, @WUnitStart, @EUnitStart, @MonthCost, @InsureCost, @StartDate, @ApartmentId, @Floor, @Picture, @ContractMonth, @LandTaxedPerson, @Available)";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
@@ -163,7 +163,7 @@ namespace AMSDesktop.DAL.Repository
                     try
                     {
                         command.Parameters.AddWithValue("@RoomNo", room.RoomNo);
-                        command.Parameters.AddWithValue("@CustomerId", room.CustomerId);
+                        command.Parameters.AddWithValue("@CustomerId", room.Customer.CustomerId);
                         command.Parameters.AddWithValue("@WUnitStart", room.WUnitStart);
                         command.Parameters.AddWithValue("@EUnitStart", room.EUnitStart);
                         command.Parameters.AddWithValue("@MonthCost", room.MonthCost);
@@ -174,6 +174,7 @@ namespace AMSDesktop.DAL.Repository
                         command.Parameters.AddWithValue("@Picture", room.Picture);
                         command.Parameters.AddWithValue("@ContractMonth", room.ContractMonth);
                         command.Parameters.AddWithValue("@LandTaxedPerson", room.LandTaxedPerson);
+                        command.Parameters.AddWithValue("@Available", room.Available);
 
                         con.Open();
 
@@ -191,7 +192,8 @@ namespace AMSDesktop.DAL.Repository
         {
             string sqlCommand = "update rooms set [RoomNo] = @RoomNo, [CustomerId] = @CustomerId, [WUnitStart] = @WUnitStart, " +
                                 "[EUnitStart] = @EUnitStart, [MonthCost] = @MonthCost, [InsureCost] = @InsureCost, [StartDate] = @StartDate, " +
-                                "[ApartmentId] = @ApartmentId, [Floor] = @Floor, [Picture] = @Picture, [ContractMonth] = @ContractMonth, [LandTaxedPerson] = @LandTaxedPerson " +
+                                "[ApartmentId] = @ApartmentId, [Floor] = @Floor, [Picture] = @Picture, [ContractMonth] = @ContractMonth, " +
+                                "[Available] = @Available, [LandTaxedPerson] = @LandTaxedPerson " +
                                 "where [RoomId] = @RoomId";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -200,7 +202,7 @@ namespace AMSDesktop.DAL.Repository
                     try
                     {
                         command.Parameters.AddWithValue("@RoomNo", room.RoomNo);
-                        command.Parameters.AddWithValue("@CustomerId", room.CustomerId);
+                        command.Parameters.AddWithValue("@CustomerId", room.Customer.CustomerId);
                         command.Parameters.AddWithValue("@WUnitStart", room.WUnitStart);
                         command.Parameters.AddWithValue("@EUnitStart", room.EUnitStart);
                         command.Parameters.AddWithValue("@MonthCost", room.MonthCost);
@@ -211,6 +213,7 @@ namespace AMSDesktop.DAL.Repository
                         command.Parameters.AddWithValue("@Picture", room.Picture);
                         command.Parameters.AddWithValue("@ContractMonth", room.ContractMonth);
                         command.Parameters.AddWithValue("@LandTaxedPerson", room.LandTaxedPerson);
+                        command.Parameters.AddWithValue("@Available", room.Available);
                         command.Parameters.AddWithValue("@RoomId", room.RoomId);
 
                         con.Open();
@@ -253,7 +256,7 @@ namespace AMSDesktop.DAL.Repository
             try
             {
                 List<Room> rooms = GetRooms(apartmentId);
-                rooms = rooms.Where(r => r.RoomNo.ToLowerInvariant().Contains(searchValue.ToLowerInvariant()) || r.ContactName.ToLowerInvariant().Contains(searchValue.ToLowerInvariant())).ToList<Room>();
+                rooms = rooms.Where(r => r.RoomNo.ToLowerInvariant().Contains(searchValue.ToLowerInvariant()) || r.Customer.ContactName.ToLowerInvariant().Contains(searchValue.ToLowerInvariant())).ToList<Room>();
 
                 return rooms;
             }

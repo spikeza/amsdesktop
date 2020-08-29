@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 E:\My Projects\amsdesktop\App.xaml
-101180925003
+12191136903
 1-1945840668
-29-398507261
+311360971840
 2219223150
-MainWindow.xaml;UI\Apartment\AddApartment.xaml;UI\Apartment\Apartment.xaml;UI\Apartment\SelectApartment.xaml;UI\Apartment\UpdateApartment.xaml;UI\Customer\AddCustomer.xaml;UI\Customer\Customer.xaml;UI\Customer\UpdateCustomer.xaml;UI\Login.xaml;UI\Room\Room.xaml;
+MainWindow.xaml;UI\Apartment\AddApartment.xaml;UI\Apartment\Apartment.xaml;UI\Apartment\SelectApartment.xaml;UI\Apartment\UpdateApartment.xaml;UI\Customer\AddCustomer.xaml;UI\Customer\Customer.xaml;UI\Customer\UpdateCustomer.xaml;UI\Login.xaml;UI\Room\AddRoom.xaml;UI\Room\Room.xaml;UI\Room\UpdateRoom.xaml;
 
 False
 

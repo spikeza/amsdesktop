@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AMSDesktop.UI.Customer"
         Style="{StaticResource FontStyle}"
         mc:Ignorable="d"
-        Title="จัดการข้อมูลผู้เช่า" Height="500" Width="800">
+        Title="จัดการข้อมูลผู้เช่า" Height="480" Width="800">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <WrapPanel HorizontalAlignment="Center">

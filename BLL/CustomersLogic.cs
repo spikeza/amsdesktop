@@ -20,6 +20,11 @@ namespace AMSDesktop.BLL
         {
             return new CustomersRepository().GetCustomer(customerId);
         }
+
+        public Customer GetLatestCustomer()
+        {
+            return new CustomersRepository().GetLatestCustomer();
+        }
         public void AddCustomer(Customer customer)
         {
             new CustomersRepository().AddCustomer(customer);

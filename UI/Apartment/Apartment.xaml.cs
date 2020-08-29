@@ -67,19 +67,26 @@ namespace AMSDesktop.UI.Apartment
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var selectedApartment = dgApartments.SelectedItem as Model.Apartment;
-            if (selectedApartment != null)
+            try
             {
-                if (MessageBox.Show("ยืนยันที่จะลบข้อมูลอพาร์ตเมนต์ " + selectedApartment.ApartmentName, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                var selectedApartment = dgApartments.SelectedItem as Model.Apartment;
+                if (selectedApartment != null)
                 {
-                    ApartmentsLogic al = new ApartmentsLogic();
-                    al.DaleteApartment(selectedApartment);
-                    dgApartments.ItemsSource = new ApartmentsLogic().GetApartments();
+                    if (MessageBox.Show("ยืนยันที่จะลบข้อมูลอพาร์ตเมนต์ " + selectedApartment.ApartmentName, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                    {
+                        ApartmentsLogic al = new ApartmentsLogic();
+                        al.DaleteApartment(selectedApartment);
+                        dgApartments.ItemsSource = new ApartmentsLogic().GetApartments();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("กรุณาเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("กรุณาเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

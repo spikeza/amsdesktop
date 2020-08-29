@@ -1,4 +1,5 @@
 ﻿using AMSDesktop.BLL;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -33,22 +34,58 @@ namespace AMSDesktop.UI.Room
 
         private void UpdateRoomData(Model.Room room)
         {
-            
+            UpdateRoom updateWindow = new UpdateRoom(room);
+            if (updateWindow.ShowDialog() == true)
+            {
+                dgRooms.ItemsSource = new RoomsLogic().GetRooms(Global.CurrentApartment.ApartmentId);
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            AddRoom addRoomWindow = new AddRoom();
+            if (addRoomWindow.ShowDialog() == true)
+            {
+                dgRooms.ItemsSource = new RoomsLogic().GetRooms(Global.CurrentApartment.ApartmentId);
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            var selectedRoom = dgRooms.SelectedItem as Model.Room;
+            if (selectedRoom != null)
+            {
+                UpdateRoomData(selectedRoom);
+            }
+            else
+            {
+                MessageBox.Show("กรุณาเลือกข้อมูลที่จะแก้ไข", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                var selectedRoom = dgRooms.SelectedItem as Model.Room;
+                if (selectedRoom != null)
+                {
+                    if (MessageBox.Show("ยืนยันที่จะลบข้อมูลห้องพัก เลขที่ห้อง " + selectedRoom.RoomNo, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                    {
+                        RoomsLogic r = new RoomsLogic();
+                        r.DaleteRoom(selectedRoom);
+                        dgRooms.ItemsSource = new RoomsLogic().GetRooms(Global.CurrentApartment.ApartmentId);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("กรุณาเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)

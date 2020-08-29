@@ -1,4 +1,6 @@
 ﻿using AMSDesktop.BLL;
+using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,10 +13,35 @@ namespace AMSDesktop.UI.Customer
     /// </summary>
     public partial class Customer : Window
     {
+        public Model.Customer selectedCustomer;
+        public bool SelectMode { get; set; }
         public Customer()
         {
             InitializeComponent();
             dgCustomers.ItemsSource = new CustomersLogic().GetCustomers();
+        }
+
+        public Customer(bool selectMode, string searchValue = "")
+        {
+            if (selectMode == true)
+            {
+                InitializeComponent();
+                SelectMode = true;
+                this.Title = "เลือกข้อมูลผู้เช่า";
+                this.Height = this.Height - 50;
+                tbxSearchValue.Text = searchValue != "" ? searchValue : "";
+                if (tbxSearchValue.Text != "")
+                {
+                    dgCustomers.ItemsSource = new CustomersLogic().SearchCustomers(tbxSearchValue.Text);
+                }
+                else
+                {
+                    dgCustomers.ItemsSource = new CustomersLogic().GetCustomers();
+                }
+                btnAdd.Visibility = Visibility.Hidden;
+                btnEdit.Visibility = Visibility.Hidden;
+                btnDelete.Visibility = Visibility.Hidden;
+            }
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -47,8 +74,15 @@ namespace AMSDesktop.UI.Customer
                 if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
                 {
                     DataGridRow row = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
-                    var selectedCustomer = row.Item as Model.Customer;
-                    UpdateCustomerData(selectedCustomer);
+                    selectedCustomer = row.Item as Model.Customer;
+                    if (!SelectMode)
+                    {
+                        UpdateCustomerData(selectedCustomer);
+                    }
+                    else
+                    {
+                        this.DialogResult = true;
+                    }
                 }
             }
         }
@@ -64,7 +98,7 @@ namespace AMSDesktop.UI.Customer
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            var selectedCustomer = dgCustomers.SelectedItem as Model.Customer;
+            selectedCustomer = dgCustomers.SelectedItem as Model.Customer;
             if (selectedCustomer != null)
             {
                 UpdateCustomerData(selectedCustomer);
@@ -77,19 +111,26 @@ namespace AMSDesktop.UI.Customer
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            var selectedCustomer = dgCustomers.SelectedItem as Model.Customer;
-            if (selectedCustomer != null)
+            try
             {
-                if (MessageBox.Show("ยืนยันที่จะลบข้อมูลอพาร์ตเมนต์ " + selectedCustomer.ContactName, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                selectedCustomer = dgCustomers.SelectedItem as Model.Customer;
+                if (selectedCustomer != null)
                 {
-                    CustomersLogic cl = new CustomersLogic();
-                    cl.DaleteCustomer(selectedCustomer);
-                    dgCustomers.ItemsSource = new CustomersLogic().GetCustomers();
+                    if (MessageBox.Show("ยืนยันที่จะลบข้อมูลผู้เช่า " + selectedCustomer.ContactName, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                    {
+                        CustomersLogic cl = new CustomersLogic();
+                        cl.DaleteCustomer(selectedCustomer);
+                        dgCustomers.ItemsSource = new CustomersLogic().GetCustomers();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("กรุณาเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("กรุณาเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

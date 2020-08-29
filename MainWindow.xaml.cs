@@ -36,7 +36,6 @@ namespace AMSDesktop
                 MessageBox.Show("กรุณาลงชื่อเข้าสู่ระบบเพื่อใช้งาน");
                 this.Close();
             }
-
         }
 
         private void mSelectApartment_Click(object sender, RoutedEventArgs e)

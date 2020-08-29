@@ -22,7 +22,7 @@ namespace AMSDesktop.DAL.Repository
         public List<Apartment> GetApartments()
         {
             List<Apartment> apartments = new List<Apartment>();
-            string sqlCommand = @"select * from apartments";
+            string sqlCommand = @"select * from apartments order by ApartmentId";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
                 OleDbCommand command = new OleDbCommand(sqlCommand, con);

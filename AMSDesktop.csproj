@@ -82,6 +82,8 @@
     <Compile Include="BLL\UsersLogic.cs" />
     <Compile Include="DAL\Model\Apartment.cs" />
     <Compile Include="DAL\Model\Customer.cs" />
+    <Compile Include="DAL\Model\Invoice.cs" />
+    <Compile Include="DAL\Model\Receipt.cs" />
     <Compile Include="DAL\Model\Room.cs" />
     <Compile Include="DAL\Repository\ApartmentsRepository.cs" />
     <Compile Include="DAL\Repository\CustomersRepository.cs" />

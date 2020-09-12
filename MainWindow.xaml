@@ -15,6 +15,9 @@
                 <MenuItem Name="mCustomerData" Header="ข้อมูลผู้เช่า" Click="mCustomerData_Click"/>
                 <MenuItem Name="mRoomData" Header="ข้อมูลห้องพัก" Click="mRoomData_Click"/>
             </MenuItem>
+            <MenuItem Header="จัดการเอกสาร" Background="#FFF0F0F0">
+                <MenuItem Name="mInvoiceData" Header="ใบแจ้งหนี้" Click="mInvoiceData_Click"/>
+            </MenuItem>
         </Menu>
         <Grid>
            

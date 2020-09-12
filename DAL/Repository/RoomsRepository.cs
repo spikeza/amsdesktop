@@ -266,6 +266,34 @@ namespace AMSDesktop.DAL.Repository
             }
             
         }
+
+        public string GetRoomNoById(long roomId)
+        {
+            string roomNo = "";
+            string sqlCommand = @"select RoomNo from rooms where roomid = @param1";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@param1", roomId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (reader.Read())
+                        {
+                            roomNo = reader["RoomNo"].ToString();
+                        }
+
+                        return roomNo;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 
 }

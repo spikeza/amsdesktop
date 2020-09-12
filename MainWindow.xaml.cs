@@ -61,5 +61,11 @@ namespace AMSDesktop
             UI.Room.Room roomWindow = new UI.Room.Room();
             roomWindow.ShowDialog();
         }
+
+        private void mInvoiceData_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Invoice.Invoice invoiceWindow = new UI.Invoice.Invoice();
+            invoiceWindow.ShowDialog();
+        }
     }
 }

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AMSDesktop.BLL;
 
 namespace AMSDesktop.UI.Invoice
 {
@@ -22,6 +23,9 @@ namespace AMSDesktop.UI.Invoice
         public Invoice()
         {
             InitializeComponent();
+            dpFromDate.SelectedDate = DateTime.Now.AddMonths(-6);
+            dpToDate.SelectedDate = DateTime.Now;
+            dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value);
         }
 
         private void tbxSearchValue_KeyDown(object sender, KeyEventArgs e)

@@ -10,7 +10,7 @@ namespace AMSDesktop.DAL.Model
     {
         public long InvoiceId { get; set; }
         public string InvoiceNo { get; set; }
-        public long RoomId { get; set; }
+        public Room Room { get; set; }
         public long MonthNo { get; set; }
         public DateTime InvDate { get; set; }
         public long WMeterStart { get; set; }

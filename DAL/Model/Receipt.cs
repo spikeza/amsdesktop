@@ -9,8 +9,8 @@ namespace AMSDesktop.DAL.Model
     public class Receipt
     {
         public long ReceiptId { get; set; }
-        public long InvoiceId { get; set; }
-        public string ReceiptNo { get; set; }
+        public Invoice Invoice { get; set; }
+        public Room Room { get; set; }
         public Decimal InterestUnit { get; set; }
         public long AmountDay { get; set; }
         public DateTime RcpDate { get; set; }

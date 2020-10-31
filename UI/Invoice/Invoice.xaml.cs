@@ -30,12 +30,15 @@ namespace AMSDesktop.UI.Invoice
 
         private void tbxSearchValue_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Enter)
+            {
+                dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(),dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value);
+            }
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-
+            dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(), dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value);
         }
 
         private void dgInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -56,6 +59,11 @@ namespace AMSDesktop.UI.Invoice
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private string GetSearchMode()
+        {
+            return rbSearchByRoomNo.IsChecked.Value == true ? "RoomNo" : "InvoiceNo";
         }
     }
 }

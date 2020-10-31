@@ -19,5 +19,10 @@ namespace AMSDesktop.BLL
         {
             return new InvoicesRepository().GetInvoicesForDataGrid(fromDate, toDate);
         }
+
+        public List<InvoiceDataGridView> SearchInvoicesForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate)
+        {
+            return new InvoicesRepository().SearchInvoicesForDataGrid(searchValue, searchMode, fromDate, toDate);
+        }
     }
 }

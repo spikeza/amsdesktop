@@ -13,7 +13,7 @@
                 <Label Content="ค้นหาใบแจ้งหนี้" Margin="0,20,0,0" Width="100"/>
                 <TextBox x:Name="tbxSearchValue" Width="200" Margin="0, 20, 0, 0" KeyDown="tbxSearchValue_KeyDown"/>
                 <RadioButton x:Name="rbSearchByRoomNo" GroupName="rbgSearchBy" Width="80" Content="เลขที่ห้อง" Margin="10, 25, 0, 0" IsChecked="True"/>
-                <RadioButton x:Name="rbSearchByInvoiceNo" GroupName="rbSearchBy" Width="100" Content="เลขที่ใบแจ้งหนี้" Margin="10, 25, 0, 0" />
+                <RadioButton x:Name="rbSearchByInvoiceNo" GroupName="rbgSearchBy" Width="100" Content="เลขที่ใบแจ้งหนี้" Margin="10, 25, 0, 0" />
                 <Button x:Name="btnSearch" Content="ค้นหา" Margin="10, 20, 10, 0" Width="100" Height="30" Click="btnSearch_Click"/>
             </WrapPanel>
             <WrapPanel HorizontalAlignment="Center">

@@ -71,8 +71,9 @@ namespace AMSDesktop.DAL.Repository
         public List<InvoiceDataGridView> GetInvoicesForDataGrid(DateTime fromDate, DateTime toDate)
         {
             List<InvoiceDataGridView> invoices = new List<InvoiceDataGridView>();
-            string sqlCommand = "select [InvoiceId], [InvoiceNo], [RoomId], [MonthNo], [InvDate], [GrandTotal] " +
-                                "from Invoices where InvDate >= @fromDate and InvDate <= @toDate " +
+            string sqlCommand = "select [InvoiceId], [InvoiceNo], Invoices.[RoomId], [RoomNo], [MonthNo], [InvDate], [GrandTotal] " +
+                                "from Invoices inner join Rooms on Invoices.[RoomId] = Rooms.[RoomId] " +
+                                "where InvDate >= @fromDate and InvDate <= @toDate " +
                                 "order by left(InvoiceNo,4) desc, right(InvoiceNo,4)";
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {
@@ -90,7 +91,56 @@ namespace AMSDesktop.DAL.Repository
                             {
                                 InvoiceId = long.Parse(reader["InvoiceId"].ToString()),
                                 InvoiceNo = reader["InvoiceNo"].ToString(),
-                                RoomNo = new RoomsRepository().GetRoomNoById(long.Parse(reader["RoomId"].ToString())),
+                                RoomNo = reader["RoomNo"].ToString(),
+                                MonthNo = long.Parse(reader["MonthNo"].ToString()),
+                                InvDate = DateTime.Parse(reader["InvDate"].ToString()),
+                                GrandTotal = Single.Parse(reader["GrandTotal"].ToString())
+                            };
+                            invoices.Add(i);
+                        }
+                    }
+                    return invoices;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public List<InvoiceDataGridView> SearchInvoicesForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate)
+        {
+            List<InvoiceDataGridView> invoices = new List<InvoiceDataGridView>();
+            string sqlCommand = @"select [InvoiceId], [InvoiceNo], Invoices.[RoomId], [RoomNo], [MonthNo], [InvDate], [GrandTotal] " +
+                                "from Invoices inner join Rooms on Invoices.[RoomId] = Rooms.[RoomId]";
+
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                if (searchMode == "RoomNo")
+                {
+                    sqlCommand += "where RoomNo like @SearchValue and InvDate >= @fromDate and InvDate <= @toDate ";
+                }
+                else
+                {
+                    sqlCommand += "where InvoiceNo like @SearchValue and InvDate >= @fromDate and InvDate <= @toDate ";
+                }
+                sqlCommand += "order by left(InvoiceNo,4) desc, right(InvoiceNo,4)";
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@SearchValue", "%" + searchValue + "%");
+                    command.Parameters.AddWithValue("@fromDate", fromDate);
+                    command.Parameters.AddWithValue("@toDate", toDate);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader())
+                    {
+                        foreach (var item in reader)
+                        {
+                            InvoiceDataGridView i = new InvoiceDataGridView()
+                            {
+                                InvoiceId = long.Parse(reader["InvoiceId"].ToString()),
+                                InvoiceNo = reader["InvoiceNo"].ToString(),
+                                RoomNo = reader["RoomNo"].ToString(),
                                 MonthNo = long.Parse(reader["MonthNo"].ToString()),
                                 InvDate = DateTime.Parse(reader["InvDate"].ToString()),
                                 GrandTotal = Single.Parse(reader["GrandTotal"].ToString())

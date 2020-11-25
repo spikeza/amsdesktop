@@ -25,20 +25,20 @@ namespace AMSDesktop.UI.Invoice
             InitializeComponent();
             dpFromDate.SelectedDate = DateTime.Now.AddMonths(-6);
             dpToDate.SelectedDate = DateTime.Now;
-            dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value);
+            dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
         }
 
         private void tbxSearchValue_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(),dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value);
+                dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(),dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
             }
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(), dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value);
+            dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(), dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
         }
 
         private void dgInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -48,7 +48,11 @@ namespace AMSDesktop.UI.Invoice
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            AddInvoice addInvoiceWindow = new AddInvoice();
+            if (addInvoiceWindow.ShowDialog() == true)
+            {
+                dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
+            }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)

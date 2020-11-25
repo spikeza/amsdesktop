@@ -9,6 +9,7 @@ namespace AMSDesktop.DAL.Model
     public class Invoice
     {
         public long InvoiceId { get; set; }
+        public long ApartmentId  { get; set; }
         public string InvoiceNo { get; set; }
         public Room Room { get; set; }
         public long MonthNo { get; set; }

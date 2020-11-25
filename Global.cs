@@ -11,5 +11,6 @@ namespace AMSDesktop
     {
         public static Apartment CurrentApartment;
         public static User CurrentUser;
+        public static SystemVariable CurrentSystemVariable;
     }
 }

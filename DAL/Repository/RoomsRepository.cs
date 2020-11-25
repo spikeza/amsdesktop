@@ -106,6 +106,38 @@ namespace AMSDesktop.DAL.Repository
             }
         }
 
+        public List<RoomDropDownView> GetRoomsForDropDownList(long apartmentId)
+        {
+            List<RoomDropDownView> rooms = new List<RoomDropDownView>();
+            string sqlCommand = @"select RoomId, RoomNo from rooms where ApartmentId = @ApartmentId order by RoomNo";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@ApartmentId", apartmentId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader())
+                    {
+                        foreach (var item in reader)
+                        {
+                            RoomDropDownView r = new RoomDropDownView()
+                            {
+                                RoomId = long.Parse(reader["RoomId"].ToString()),
+                                RoomNo = reader["RoomNo"].ToString()
+                            };
+                            rooms.Add(r);
+                        }
+                    }
+                    return rooms;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         public Room GetRoom(long roomId)
         {
             Room room;

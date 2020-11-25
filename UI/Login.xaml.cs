@@ -47,6 +47,7 @@ namespace AMSDesktop.UI
             {
                 Global.CurrentApartment = new ApartmentsLogic().GetApartment(long.Parse(cbxApartment.SelectedValue.ToString()));
                 Global.CurrentUser = new UsersLogic().IsAuthenticatedUser(username, password);
+                Global.CurrentSystemVariable = new SystemVariablesLogic().GetSystemVariable(long.Parse(cbxApartment.SelectedValue.ToString()));
                 if (Global.CurrentUser != null)
                 {
                     this.DialogResult = true;

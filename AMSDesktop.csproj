@@ -88,6 +88,7 @@
     <Compile Include="DAL\Model\InvoiceDataGridView.cs" />
     <Compile Include="DAL\Model\Receipt.cs" />
     <Compile Include="DAL\Model\Room.cs" />
+    <Compile Include="DAL\Model\RoomDropDownView.cs" />
     <Compile Include="DAL\Model\SystemVariable.cs" />
     <Compile Include="DAL\Repository\ApartmentsRepository.cs" />
     <Compile Include="DAL\Repository\CustomersRepository.cs" />
@@ -115,6 +116,9 @@
     </Compile>
     <Compile Include="UI\Customer\UpdateCustomer.xaml.cs">
       <DependentUpon>UpdateCustomer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Invoice\AddInvoice.xaml.cs">
+      <DependentUpon>AddInvoice.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Invoice\Invoice.xaml.cs">
       <DependentUpon>Invoice.xaml</DependentUpon>
@@ -174,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Customer\UpdateCustomer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Invoice\AddInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -10,19 +10,23 @@ namespace AMSDesktop.BLL
 {
     public class InvoicesLogic
     {
-        public List<Invoice> GetInvoices(DateTime fromDate, DateTime toDate)
+        public List<Invoice> GetInvoices(DateTime fromDate, DateTime toDate, long apartmentId)
         {
-            return new InvoicesRepository().GetInvoices(fromDate, toDate);
+            return new InvoicesRepository().GetInvoices(fromDate, toDate, apartmentId);
         }
 
-        public List<InvoiceDataGridView> GetInvoicesForDataGrid(DateTime fromDate, DateTime toDate)
+        public List<InvoiceDataGridView> GetInvoicesForDataGrid(DateTime fromDate, DateTime toDate, long apartmentId)
         {
-            return new InvoicesRepository().GetInvoicesForDataGrid(fromDate, toDate);
+            return new InvoicesRepository().GetInvoicesForDataGrid(fromDate, toDate, apartmentId);
         }
 
-        public List<InvoiceDataGridView> SearchInvoicesForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate)
+        public List<InvoiceDataGridView> SearchInvoicesForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate, long apartmentId)
         {
-            return new InvoicesRepository().SearchInvoicesForDataGrid(searchValue, searchMode, fromDate, toDate);
+            return new InvoicesRepository().SearchInvoicesForDataGrid(searchValue, searchMode, fromDate, toDate, apartmentId);
+        }
+        public string GetNewInvoiceNumber(long apartmentId)
+        {
+            return new InvoicesRepository().GetNewInvoiceNumber(apartmentId);
         }
     }
 }

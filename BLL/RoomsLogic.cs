@@ -20,6 +20,11 @@ namespace AMSDesktop.BLL
             return new RoomsRepository().GetRooms(apartmentId);
         }
 
+        public List<RoomDropDownView> GetRoomsForDropDownList(long apartmentId)
+        {
+            return new RoomsRepository().GetRoomsForDropDownList(apartmentId);
+        }
+
         public Room GetRoom(long roomId)
         {
             return new RoomsRepository().GetRoom(roomId);

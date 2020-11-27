@@ -28,5 +28,10 @@ namespace AMSDesktop.BLL
         {
             return new InvoicesRepository().GetNewInvoiceNumber(apartmentId);
         }
+
+        public void AddInvoice(Invoice invoice)
+        {
+            new InvoicesRepository().AddInvoice(invoice);
+        }
     }
 }

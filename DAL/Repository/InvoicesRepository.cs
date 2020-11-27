@@ -203,5 +203,51 @@ namespace AMSDesktop.DAL.Repository
                 }
             }
         }
+
+        public void AddInvoice(Invoice invoice)
+        {
+            string sqlCommand = "insert into invoices ([ApartmentId], [InvoiceNo], [RoomId], [MonthNo], [InvDate], [WMeterStart], [EMeterStart], " +
+                                "[WUsedUnit], [EUsedUnit], [TelCost], [WUnit], [EUnit], [ImproveText], [ImproveCost], [Comment], [Paid], " +
+                                "[TotalText], [GrandTotal], [GrandTotalText]) " +
+                                "values(@ApartmentId, @InvoiceNo, @RoomId, @MonthNo, @InvDate, @WMeterStart, @EMeterStart," +
+                                "@WUsedUnit, @EUsedUnit, @TelCost, @WUnit, @EUnit, @ImproveText, @ImproveCost, @Comment, @Paid," +
+                                "@TotalText, @GrandTotal, @GrandTotalText)";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@ApartmentId", invoice.ApartmentId);
+                        command.Parameters.AddWithValue("@InvoiceNo", invoice.InvoiceNo);
+                        command.Parameters.AddWithValue("@RoomId", invoice.Room.RoomId);
+                        command.Parameters.AddWithValue("@MonthNo", invoice.MonthNo);
+                        command.Parameters.AddWithValue("@InvDate", invoice.InvDate);
+                        command.Parameters.AddWithValue("@WMeterStart", invoice.WMeterStart);
+                        command.Parameters.AddWithValue("@EMeterStart", invoice.EMeterStart);
+                        command.Parameters.AddWithValue("@WUsedUnit", invoice.WUsedUnit);
+                        command.Parameters.AddWithValue("@EUsedUnit", invoice.EUsedUnit);
+                        command.Parameters.AddWithValue("@TelCost", invoice.TelCost);
+                        command.Parameters.AddWithValue("@WUnit", invoice.WUnit);
+                        command.Parameters.AddWithValue("@EUnit", invoice.EUnit);
+                        command.Parameters.AddWithValue("@ImproveText", invoice.ImproveText);
+                        command.Parameters.AddWithValue("@ImproveCost", invoice.ImproveCost);
+                        command.Parameters.AddWithValue("@Comment", invoice.Comment);
+                        command.Parameters.AddWithValue("@Paid", invoice.Paid);
+                        command.Parameters.AddWithValue("@TotalText", invoice.TotalText);
+                        command.Parameters.AddWithValue("@GrandTotal", invoice.GrandTotal);
+                        command.Parameters.AddWithValue("@GrandTotalText", invoice.GrandTotalText);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }

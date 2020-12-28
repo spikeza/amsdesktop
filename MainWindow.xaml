@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AMSDesktop"
         mc:Ignorable="d"
         Style="{StaticResource FontStyle}"
-        Title="ระบบจัดการอพาต์เมนต์" Height="450" Width="800">
+        Title="ระบบจัดการอพาต์เมนต์" Height="450" Width="800" WindowState="Maximized">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource FontStyle}">
             <MenuItem Name="mSelectApartment" Header="เลือกอพาร์ตเมนต์" Click="mSelectApartment_Click"/>

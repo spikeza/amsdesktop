@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,42 @@ namespace AMSDesktop.BLL
         public void AddInvoice(Invoice invoice)
         {
             new InvoicesRepository().AddInvoice(invoice);
+        }
+
+        public List<InvoiceForPrinting> GetInvoiceForPrinting(Invoice invoice)
+        {
+            List<InvoiceForPrinting> invoices = new List<InvoiceForPrinting>();
+
+            invoices.Add(new InvoiceForPrinting()
+            {
+                ApartmentName = Global.CurrentApartment.ApartmentName,
+                ApartmentAddress = Global.CurrentApartment.Address,
+                InvoiceNo = invoice.InvoiceNo,
+                RoomNo = invoice.Room.RoomNo,
+                MonthNo = invoice.MonthNo,
+                InvDate = invoice.InvDate.ToString("d MMMM yyyy", new CultureInfo("th-TH")),
+                ContactName = invoice.Room.Customer.ContactName,
+                WMeterStart = invoice.WMeterStart,
+                EMeterStart = invoice.EMeterStart,
+                WUsedUnit = invoice.WUsedUnit,
+                EUsedUnit = invoice.EUsedUnit,
+                WMeterEnd = invoice.WMeterStart + invoice.WUsedUnit,
+                EMeterEnd = invoice.EMeterStart + invoice.EUsedUnit,
+                WUnit = invoice.WUnit,
+                EUnit = invoice.EUnit,
+                WAmount = invoice.WUsedUnit * invoice.WUnit,
+                EAmount = invoice.EUsedUnit * invoice.EUnit,
+                TelCost = invoice.TelCost,
+                MonthCost = invoice.Room.MonthCost,
+                ImproveText = invoice.ImproveText,
+                ImproveCost = invoice.ImproveCost,
+                Total = (invoice.WUsedUnit * invoice.WUnit) + (invoice.EUsedUnit * invoice.EUnit) + invoice.TelCost + invoice.Room.MonthCost + invoice.ImproveCost,
+                GrandTotal = invoice.GrandTotal,
+                GrandTotalText = invoice.GrandTotalText,
+                Comment = invoice.Comment
+            });
+
+            return invoices;
         }
     }
 }

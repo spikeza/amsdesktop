@@ -26,6 +26,7 @@ namespace AMSDesktop
         public MainWindow()
         {
             InitializeComponent();
+            
             UI.Login loginWindow = new UI.Login();
             if (loginWindow.ShowDialog() == true)
             {

@@ -98,7 +98,7 @@
                         <Label Content=")"/>
                     </WrapPanel>
                     <TextBox x:Name="tbxWaterUnits" Width="40" Grid.Row="1" Grid.Column="2" Margin="0, 5, 0, 0" HorizontalAlignment="Center" IsReadOnly="True" TextAlignment="Right" Background="WhiteSmoke"/>
-                    <TextBox x:Name="tbxWaterUnitPrices" Width="60" Grid.Row="1" Grid.Column="3" Margin="0, 5, 0, 0" HorizontalAlignment="Center" TextAlignment="Right" TabIndex="5"/>
+                    <TextBox x:Name="tbxWaterUnitPrices" Width="60" Grid.Row="1" Grid.Column="3" Margin="0, 5, 0, 0" HorizontalAlignment="Center" TextAlignment="Right" TabIndex="5" IsReadOnly="True"/>
                     <TextBox x:Name="tbxWaterAmount" Width="120" Grid.Row="1" Grid.Column="4" Margin="0, 5, 0, 0" HorizontalAlignment="Right" IsReadOnly="True" TextAlignment="Right" Background="WhiteSmoke"/>
                     <Label Content="ค่าไฟฟ้า (Electric Cost)" Grid.Row="2" Grid.Column="0"/>
                     <WrapPanel Grid.Row="2" Grid.Column="1" Margin="0, 5, 0, 0" HorizontalAlignment="Center">
@@ -109,12 +109,12 @@
                         <Label Content=")"/>
                     </WrapPanel>
                     <TextBox x:Name="tbxElectricUnits" Width="40" Grid.Row="2" Grid.Column="2" Margin="0, 5, 0, 0" HorizontalAlignment="Center" IsReadOnly="True" TextAlignment="Right" Background="WhiteSmoke"/>
-                    <TextBox x:Name="tbxElectricUnitPrices" Width="60" Grid.Row="2" Grid.Column="3" Margin="0, 5, 0, 0" HorizontalAlignment="Center" TextAlignment="Right" TabIndex="7"/>
+                    <TextBox x:Name="tbxElectricUnitPrices" Width="60" Grid.Row="2" Grid.Column="3" Margin="0, 5, 0, 0" HorizontalAlignment="Center" TextAlignment="Right" TabIndex="7" IsReadOnly="True"/>
                     <TextBox x:Name="tbxElectricAmount" Width="120" Grid.Row="2" Grid.Column="4" Margin="0, 5, 0, 0" HorizontalAlignment="Right" IsReadOnly="True" TextAlignment="Right" Background="WhiteSmoke"/>
                     <Label Content="ค่าโทรศัพท์ (Telephone Fee)" Grid.Row="3" Grid.Column="0"/>
                     <TextBox x:Name="tbxTelephoneAmount" Width="120" Grid.Row="3" Grid.Column="4" Margin="0, 5, 0, 0" HorizontalAlignment="Right" TextAlignment="Right" PreviewTextInput="FloatingValidationTextBox" TextChanged="tbxTelephoneAmount_TextChanged"/>
                     <Label Content="ค่าเช่าห้อง" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2" Margin="70, 0, 0, 0"/>
-                    <TextBox x:Name="tbxMonthCost" Width="120" Grid.Row="4" Grid.Column="4" Margin="0, 5, 0, 0" HorizontalAlignment="Right" TextAlignment="Right" PreviewTextInput="FloatingValidationTextBox" TextChanged="tbxMonthCost_TextChanged" TabIndex="8"/>
+                    <TextBox x:Name="tbxMonthCost" Width="120" Grid.Row="4" Grid.Column="4" Margin="0, 5, 0, 0" HorizontalAlignment="Right" TextAlignment="Right" PreviewTextInput="FloatingValidationTextBox" TextChanged="tbxMonthCost_TextChanged" TabIndex="8" IsReadOnly="True"/>
                     <TextBox x:Name="tbxImproveText" Width="100" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" Margin="50, 5, 0, 0" HorizontalAlignment="Center" TextAlignment="Left" Text="ค่าใช้จ่ายอื่น ๆ"/>
                     <TextBox x:Name="tbxImproveCost" Width="120" Grid.Row="5" Grid.Column="4" Margin="0, 5, 0, 0" HorizontalAlignment="Right" TextAlignment="Right" PreviewTextInput="FloatingValidationTextBox" TextChanged="tbxImproveCost_TextChanged" TabIndex="9"/>
                     <Label Content="เงินรวม/Total" Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" Margin="70, 0, 0, 0"/>

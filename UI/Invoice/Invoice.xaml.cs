@@ -49,10 +49,8 @@ namespace AMSDesktop.UI.Invoice
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             AddInvoice addInvoiceWindow = new AddInvoice();
-            if (addInvoiceWindow.ShowDialog() == true)
-            {
-                dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
-            }
+            addInvoiceWindow.ShowDialog();
+            dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)

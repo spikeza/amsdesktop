@@ -48,5 +48,10 @@ namespace AMSDesktop.BLL
         {
             return new RoomsRepository().SearchRooms(searchValue, apartmentId);
         }
+
+        public void UpdateRoomMeterStart(Room room)
+        {
+            new RoomsRepository().UpdateRoomMeterStart(room);
+        }
     }
 }

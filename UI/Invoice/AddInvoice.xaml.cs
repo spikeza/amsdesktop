@@ -82,9 +82,10 @@ namespace AMSDesktop.UI.Invoice
 
         private void PopulateFieldsOnRoomSelect()
         {
+            Model.Invoice latestInvoive = new InvoicesLogic().GetLatestInvoice(_selectedRoom.RoomId);
             lblContactName.Content = _selectedRoom.Customer.ContactName;
-            tbxWaterStart.Text = _selectedRoom.WUnitStart.ToString();
-            tbxElectricStart.Text = _selectedRoom.EUnitStart.ToString();
+            tbxWaterStart.Text = latestInvoive != null ? (latestInvoive.WMeterStart + latestInvoive.WUsedUnit).ToString() : "0";
+            tbxElectricStart.Text = latestInvoive != null ? (latestInvoive.EMeterStart + latestInvoive.EUsedUnit).ToString() : "0";
             tbxWaterUnitPrices.Text = Global.CurrentSystemVariable.WUnit.ToString("N2", thCulture);
             tbxElectricUnitPrices.Text = Global.CurrentSystemVariable.EUnit.ToString("N2", thCulture);
             tbxMonthCost.Text = _selectedRoom.MonthCost.ToString("N2", thCulture);
@@ -118,8 +119,14 @@ namespace AMSDesktop.UI.Invoice
                         GrandTotal = Decimal.ToSingle(_grandTotalAmount),
                         GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(_grandTotalAmount)
                     };
+
                     new InvoicesLogic().AddInvoice(invoice);
                     _activeInvoice = invoice;
+
+                    _selectedRoom.WUnitStart = _waterStart;
+                    _selectedRoom.EUnitStart = _electricStart;
+                    new RoomsLogic().UpdateRoomMeterStart(_selectedRoom);
+
                     MessageBox.Show("การเพิ่มข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     EnablePrinting(true);

@@ -59,7 +59,9 @@ namespace AMSDesktop.UI.Receipt
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            AddReceipt addReceiptWindow = new AddReceipt();
+            addReceiptWindow.ShowDialog();
+            dgReceipts.ItemsSource = new ReceiptsLogic().GetReceiptsForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)

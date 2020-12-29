@@ -91,6 +91,12 @@ namespace AMSDesktop.UI.Invoice
                     {
                         InvoicesLogic l = new InvoicesLogic();
                         l.DeleteInvoice(selectedInvoice);
+
+                        Model. Invoice latestInvoice = new InvoicesLogic().GetLatestInvoice(selectedInvoice.Room.RoomId);
+                        selectedInvoice.Room.WUnitStart = latestInvoice != null ? latestInvoice.WMeterStart : 0;
+                        selectedInvoice.Room.EUnitStart = latestInvoice != null ? latestInvoice.EMeterStart : 0;
+                        new RoomsLogic().UpdateRoomMeterStart(selectedInvoice.Room);
+
                         SearchInvoice();
                     }
                 }

@@ -100,6 +100,7 @@
     <Compile Include="DAL\Model\InvoiceForPrinting.cs" />
     <Compile Include="DAL\Model\Receipt.cs" />
     <Compile Include="DAL\Model\ReceiptDataGridView.cs" />
+    <Compile Include="DAL\Model\ReceiptForPrinting.cs" />
     <Compile Include="DAL\Model\Room.cs" />
     <Compile Include="DAL\Model\RoomDropDownView.cs" />
     <Compile Include="DAL\Model\SystemVariable.cs" />
@@ -142,6 +143,9 @@
     </Compile>
     <Compile Include="UI\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Receipt\AddReceipt.xaml.cs">
+      <DependentUpon>AddReceipt.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Receipt\Receipt.xaml.cs">
       <DependentUpon>Receipt.xaml</DependentUpon>
@@ -217,6 +221,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Receipt\AddReceipt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Receipt\Receipt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -256,11 +264,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Receipt.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\Invoice.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\AMSDesktop.DAL.Model.InvoiceForPrinting.datasource" />
+    <None Include="Properties\DataSources\AMSDesktop.DAL.Model.ReceiptForPrinting.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

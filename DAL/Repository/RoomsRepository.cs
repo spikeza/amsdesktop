@@ -326,6 +326,32 @@ namespace AMSDesktop.DAL.Repository
                 }
             }
         }
+
+        public void UpdateRoomMeterStart(Room room)
+        {
+            string sqlCommand = "update rooms set [WUnitStart] = @WUnitStart, [EUnitStart] = @EUnitStart " +
+                                "where [RoomId] = @RoomId";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@WUnitStart", room.WUnitStart);
+                        command.Parameters.AddWithValue("@EUnitStart", room.EUnitStart);
+                        command.Parameters.AddWithValue("@RoomId", room.RoomId);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 
 }

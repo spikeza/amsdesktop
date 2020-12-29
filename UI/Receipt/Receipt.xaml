@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AMSDesktop.UI.Receipt"
         mc:Ignorable="d" 
         Style="{StaticResource FontStyle}"
-        Title="จัดการข้อมูลใบเสร็จรับเงิน" Height="450" Width="800">
+        Title="จัดการข้อมูลใบเสร็จรับเงิน" Height="520" Width="800">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <WrapPanel HorizontalAlignment="Center">

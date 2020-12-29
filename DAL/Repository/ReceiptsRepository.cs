@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.OleDb;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -108,6 +110,82 @@ namespace AMSDesktop.DAL.Repository
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+        }
+
+        public string GetNewReceiptNumber(long apartmentId)
+        {
+            CultureInfo thCulture = new CultureInfo("th-TH");
+            string prefix = DateTime.Now.ToString("yyMM-", thCulture);
+            string lastReceiptNo = "", nextReceiptNo = "";
+            string sqlCommand = @"select top 1 ReceiptNo from receipts where apartmentId = @apartmentId order by ReceiptId desc";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@apartmentId", apartmentId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (reader.Read())
+                        {
+                            lastReceiptNo = reader["ReceiptNo"].ToString();
+
+                            if (lastReceiptNo.Substring(0, 4) == DateTime.Now.ToString("yyMM-", thCulture))
+                            {
+                                int next = int.Parse(lastReceiptNo.Substring(5).TrimStart('0')) + 1;
+                                nextReceiptNo = DateTime.Now.ToString("yyMM-", thCulture) + next.ToString().PadLeft(4, '0');
+                            }
+                            else
+                            {
+                                nextReceiptNo = DateTime.Now.ToString("yyMM-", thCulture) + "0001";
+                            }
+                        }
+
+                        return nextReceiptNo;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void AddReceipt(Receipt receipt)
+        {
+            string sqlCommand = "insert into receipts ([InvoiceID], [ApartmentID], [ReceiptNo], [InterestUnit], [AmountDay], [RcpDate], " +
+                                "[Comment], [TotalText], [GrandTotal], [GrandTotalText]) " +
+                                "values(@InvoiceID, @ApartmentID, @ReceiptNo, @InterestUnit, @AmountDay, @RcpDate," +
+                                "@Comment, @TotalText, @GrandTotal, @GrandTotalText)";
+
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@InvoiceID", receipt.Invoice.InvoiceId);
+                        command.Parameters.AddWithValue("@ApartmentID", receipt.ApartmentId);
+                        command.Parameters.AddWithValue("@ReceiptNo", receipt.ReceiptNo);
+                        command.Parameters.AddWithValue("@InterestUnit", receipt.InterestUnit);
+                        command.Parameters.AddWithValue("@AmountDay", receipt.AmountDay);
+                        command.Parameters.AddWithValue("@RcpDate", receipt.RcpDate);
+                        command.Parameters.AddWithValue("@Comment", receipt.Comment);
+                        command.Parameters.AddWithValue("@TotalText", receipt.TotalText);
+                        command.Parameters.AddWithValue("@GrandTotal", receipt.GrandTotal);
+                        command.Parameters.AddWithValue("@GrandTotalText", receipt.GrandTotalText);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
         }

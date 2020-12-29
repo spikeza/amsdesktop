@@ -26,6 +26,11 @@ namespace AMSDesktop.BLL
             return new InvoicesRepository().GetInvoice(invoiceId);
         }
 
+        public Invoice GetLatestInvoice(long roomId)
+        {
+            return new InvoicesRepository().GetLatestInvoice(roomId);
+        }
+
         public List<InvoiceDataGridView> SearchInvoicesForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate, long apartmentId)
         {
             return new InvoicesRepository().SearchInvoicesForDataGrid(searchValue, searchMode, fromDate, toDate, apartmentId);
@@ -48,6 +53,11 @@ namespace AMSDesktop.BLL
         public void DeleteInvoice(Invoice invoice)
         {
             new InvoicesRepository().DeleteInvoice(invoice);
+        }
+
+        public Invoice GetInvoiceForReceipt(long roomId, long month, int year)
+        {
+            return new InvoicesRepository().GetInvoiceForReceipt(roomId, month, year);
         }
 
         public List<InvoiceForPrinting> GetInvoiceForPrinting(Invoice invoice)

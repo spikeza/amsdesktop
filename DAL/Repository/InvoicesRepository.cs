@@ -166,6 +166,114 @@ namespace AMSDesktop.DAL.Repository
             }
         }
 
+        public Invoice GetInvoiceForReceipt(long roomId, long month, int year)
+        {
+            Invoice invoice;
+            string sqlCommand = "select top 1 * from invoices where roomId = @RoomId and monthNo = @MonthNo " +
+                                "and Year(InvDate) = @Year " +
+                                "order by InvDate desc";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@RoomId", roomId);
+                    command.Parameters.AddWithValue("@MonthNo", month);
+                    command.Parameters.AddWithValue("@Year", year);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (reader.Read())
+                        {
+                            invoice = new Invoice()
+                            {
+                                InvoiceId = long.Parse(reader["InvoiceId"].ToString()),
+                                ApartmentId = long.Parse(reader["ApartmentId"].ToString()),
+                                InvoiceNo = reader["InvoiceNo"].ToString(),
+                                Room = new RoomsRepository().GetRoom(long.Parse(reader["RoomId"].ToString())),
+                                MonthNo = long.Parse(reader["MonthNo"].ToString()),
+                                InvDate = DateTime.Parse(reader["InvDate"].ToString()),
+                                WMeterStart = long.Parse(reader["WMeterStart"].ToString()),
+                                EMeterStart = long.Parse(reader["EMeterStart"].ToString()),
+                                WUsedUnit = long.Parse(reader["WUsedUnit"].ToString()),
+                                EUsedUnit = long.Parse(reader["EUsedUnit"].ToString()),
+                                TelCost = Decimal.Parse(reader["TelCost"].ToString()),
+                                WUnit = Decimal.Parse(reader["WUnit"].ToString()),
+                                EUnit = Decimal.Parse(reader["EUnit"].ToString()),
+                                ImproveText = reader["ImproveText"].ToString(),
+                                ImproveCost = Decimal.Parse(reader["ImproveCost"].ToString()),
+                                Comment = reader["Comment"].ToString(),
+                                Paid = bool.Parse(reader["Paid"].ToString()),
+                                TotalText = reader["TotalText"].ToString(),
+                                GrandTotal = Single.Parse(reader["GrandTotal"].ToString()),
+                                GrandTotalText = reader["GrandTotalText"].ToString()
+                            };
+
+                            return invoice;
+                        }
+
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public Invoice GetLatestInvoice(long roomId)
+        {
+            Invoice invoice;
+            string sqlCommand = @"select top 1 * from invoices where roomId = @param1 order by InvDate desc";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@param1", roomId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (reader.Read())
+                        {
+                            invoice = new Invoice()
+                            {
+                                InvoiceId = long.Parse(reader["InvoiceId"].ToString()),
+                                ApartmentId = long.Parse(reader["ApartmentId"].ToString()),
+                                InvoiceNo = reader["InvoiceNo"].ToString(),
+                                Room = new RoomsRepository().GetRoom(long.Parse(reader["RoomId"].ToString())),
+                                MonthNo = long.Parse(reader["MonthNo"].ToString()),
+                                InvDate = DateTime.Parse(reader["InvDate"].ToString()),
+                                WMeterStart = long.Parse(reader["WMeterStart"].ToString()),
+                                EMeterStart = long.Parse(reader["EMeterStart"].ToString()),
+                                WUsedUnit = long.Parse(reader["WUsedUnit"].ToString()),
+                                EUsedUnit = long.Parse(reader["EUsedUnit"].ToString()),
+                                TelCost = Decimal.Parse(reader["TelCost"].ToString()),
+                                WUnit = Decimal.Parse(reader["WUnit"].ToString()),
+                                EUnit = Decimal.Parse(reader["EUnit"].ToString()),
+                                ImproveText = reader["ImproveText"].ToString(),
+                                ImproveCost = Decimal.Parse(reader["ImproveCost"].ToString()),
+                                Comment = reader["Comment"].ToString(),
+                                Paid = bool.Parse(reader["Paid"].ToString()),
+                                TotalText = reader["TotalText"].ToString(),
+                                GrandTotal = Single.Parse(reader["GrandTotal"].ToString()),
+                                GrandTotalText = reader["GrandTotalText"].ToString()
+                            };
+
+                            return invoice;
+                        }
+
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         public List<InvoiceDataGridView> SearchInvoicesForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate, long apartmentId)
         {
             List<InvoiceDataGridView> invoices = new List<InvoiceDataGridView>();

@@ -45,6 +45,11 @@ namespace AMSDesktop.BLL
             new InvoicesRepository().UpdateInvoice(invoice);
         }
 
+        public void DeleteInvoice(Invoice invoice)
+        {
+            new InvoicesRepository().DeleteInvoice(invoice);
+        }
+
         public List<InvoiceForPrinting> GetInvoiceForPrinting(Invoice invoice)
         {
             List<InvoiceForPrinting> invoices = new List<InvoiceForPrinting>();

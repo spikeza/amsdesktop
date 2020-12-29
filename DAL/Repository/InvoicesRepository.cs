@@ -336,5 +336,28 @@ namespace AMSDesktop.DAL.Repository
                 }
             }
         }
+
+        public void DeleteInvoice(Invoice invoice)
+        {
+            string sqlCommand = "delete from invoices where [InvoiceId] = @InvoiceId";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@InvoiceId", invoice.InvoiceId);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }

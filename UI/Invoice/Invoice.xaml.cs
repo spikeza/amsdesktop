@@ -30,17 +30,20 @@ namespace AMSDesktop.UI.Invoice
             dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
         }
 
+        private void SearchInvoice()
+        {
+            if (IsDateCriteriaValid())
+                dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(), dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
+        }
         private void tbxSearchValue_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
-                dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(),dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
-            }
+                SearchInvoice();
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            dgInvoices.ItemsSource = new InvoicesLogic().SearchInvoicesForDataGrid(tbxSearchValue.Text, GetSearchMode(), dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
+            SearchInvoice();
         }
 
         private void dgInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -66,12 +69,40 @@ namespace AMSDesktop.UI.Invoice
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            var selectedInvoice = new InvoicesLogic().GetInvoice((dgInvoices.SelectedItem as Model.InvoiceDataGridView).InvoiceId);
+            if (selectedInvoice != null)
+            {
+                UpdateInvoiceData(selectedInvoice);
+            }
+            else
+            {
+                MessageBox.Show("กรุณาเลือกข้อมูลที่จะแก้ไข", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                var selectedInvoice = new InvoicesLogic().GetInvoice((dgInvoices.SelectedItem as Model.InvoiceDataGridView).InvoiceId);
+                if (selectedInvoice != null)
+                {
+                    if (MessageBox.Show("ยืนยันที่จะลบข้อมูลใบแจ้งหนี้ " + selectedInvoice.InvoiceNo, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                    {
+                        InvoicesLogic l = new InvoicesLogic();
+                        l.DeleteInvoice(selectedInvoice);
+                        SearchInvoice();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("กรุณาเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private string GetSearchMode()
@@ -86,6 +117,34 @@ namespace AMSDesktop.UI.Invoice
             {
                 dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
             }
+        }
+
+        private bool IsDateCriteriaValid()
+        {
+            if (dpFromDate.SelectedDate != null && dpToDate.SelectedDate != null)
+            {
+                if (dpFromDate.SelectedDate.Value < dpToDate.SelectedDate.Value)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("ช่วงเวลาของการค้นหาข้อมูลไม่ถูกต้อง", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        private void dpFromDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchInvoice();
+        }
+
+        private void dpToDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchInvoice();
         }
     }
 }

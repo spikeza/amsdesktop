@@ -266,7 +266,7 @@ namespace AMSDesktop.UI.Invoice
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+            this.DialogResult = false;
         }
 
         private void EnablePrinting(bool isEnable)

@@ -68,5 +68,11 @@ namespace AMSDesktop
             UI.Invoice.Invoice invoiceWindow = new UI.Invoice.Invoice();
             invoiceWindow.ShowDialog();
         }
+
+        private void mReceiptData_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Receipt.Receipt receiptWindow = new UI.Receipt.Receipt();
+            receiptWindow.ShowDialog();
+        }
     }
 }

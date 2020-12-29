@@ -180,7 +180,7 @@ namespace AMSDesktop.DAL.Repository
                 }
                 else
                 {
-                    sqlCommand += "where InvoiceNo like @SearchValue and InvDate >= @fromDate and InvDate <= @toDate Invoices.apartmentId = @apartmentId ";
+                    sqlCommand += "where InvoiceNo like @SearchValue and InvDate >= @fromDate and InvDate <= @toDate and Invoices.apartmentId = @apartmentId ";
                 }
                 sqlCommand += "order by left(InvoiceNo,4) desc, right(InvoiceNo,4)";
                 OleDbCommand command = new OleDbCommand(sqlCommand, con);

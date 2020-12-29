@@ -89,6 +89,7 @@
     <Compile Include="BLL\ApartmentsLogic.cs" />
     <Compile Include="BLL\CustomersLogic.cs" />
     <Compile Include="BLL\InvoicesLogic.cs" />
+    <Compile Include="BLL\ReceiptsLogic.cs" />
     <Compile Include="BLL\RoomsLogic.cs" />
     <Compile Include="BLL\SystemVariablesLogic.cs" />
     <Compile Include="BLL\UsersLogic.cs" />
@@ -98,12 +99,14 @@
     <Compile Include="DAL\Model\InvoiceDataGridView.cs" />
     <Compile Include="DAL\Model\InvoiceForPrinting.cs" />
     <Compile Include="DAL\Model\Receipt.cs" />
+    <Compile Include="DAL\Model\ReceiptDataGridView.cs" />
     <Compile Include="DAL\Model\Room.cs" />
     <Compile Include="DAL\Model\RoomDropDownView.cs" />
     <Compile Include="DAL\Model\SystemVariable.cs" />
     <Compile Include="DAL\Repository\ApartmentsRepository.cs" />
     <Compile Include="DAL\Repository\CustomersRepository.cs" />
     <Compile Include="DAL\Repository\InvoicesRepository.cs" />
+    <Compile Include="DAL\Repository\ReceiptsRepository.cs" />
     <Compile Include="DAL\Repository\RoomsRepository.cs" />
     <Compile Include="DAL\Repository\SystemVariablesRepository.cs" />
     <Compile Include="Global.cs" />

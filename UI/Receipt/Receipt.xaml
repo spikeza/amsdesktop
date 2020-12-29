@@ -11,25 +11,24 @@
         <StackPanel DockPanel.Dock="Top">
             <WrapPanel HorizontalAlignment="Center">
                 <Label Content="ค้นหาใบเสร็จรับเงิน" Margin="0,20,0,0" Width="110"/>
-                <TextBox x:Name="tbxSearchValue" Width="200" Margin="0, 20, 0, 0" KeyDown="tbxSearchValue_KeyDown"/>
-                <RadioButton x:Name="rbSearchByRoomNo" GroupName="rbgSearchBy" Width="80" Content="เลขที่ห้อง" Margin="10, 25, 0, 0"/>
-                <RadioButton x:Name="rbSearchByReceiptNo" GroupName="rbSearchBy" Width="120" Content="เลขที่ใบเสร็จรับเงิน" Margin="10, 25, 0, 0" />
+                <TextBox x:Name="tbxSearchValue" Width="200" Margin="0, 20, 0, 0" KeyDown="tbxSearchValue_KeyDown" TextChanged="tbxSearchValue_TextChanged"/>
+                <RadioButton x:Name="rbSearchByRoomNo" GroupName="rbgSearchBy" Width="80" Content="เลขที่ห้อง" Margin="10, 25, 0, 0" IsChecked="True"/>
+                <RadioButton x:Name="rbSearchByReceiptNo" GroupName="rbgSearchBy" Width="120" Content="เลขที่ใบเสร็จรับเงิน" Margin="10, 25, 0, 0" />
                 <Button x:Name="btnSearch" Content="ค้นหา" Margin="10, 20, 10, 0" Width="100" Height="30" Click="btnSearch_Click"/>
             </WrapPanel>
             <WrapPanel HorizontalAlignment="Center">
-                <CheckBox x:Name="cbSearchByDateRange" Content="ช่วงเวลา" Width="70" Margin="0, 16, 0, 0" IsChecked="False"/>
-                <Label Content="ตั้งแต่" Width="40" Margin="0, 10, 0, 0"/>
-                <DatePicker Name="dpFromDate" Width="150" Margin="0, 10, 0, 0"/>
+                <Label Content="ช่วงเวลาตั้งแต่" Width="86" Margin="0, 10, 0, 0"/>
+                <DatePicker Name="dpFromDate" Width="150" Margin="0, 10, 0, 0" SelectedDateChanged="dpFromDate_SelectedDateChanged"/>
                 <Label Content="ถึง" Width="30" Margin="10, 10, 0, 0" />
-                <DatePicker Name="dpToDate" Width="150" Margin="0, 10, 0, 0"/>
+                <DatePicker Name="dpToDate" Width="150" Margin="0, 10, 0, 0" SelectedDateChanged="dpToDate_SelectedDateChanged"/>
             </WrapPanel>
             <DataGrid x:Name="dgReceipts" Height="300" Width="600" Margin="0,20,0,20" AutoGenerateColumns="False" HorizontalAlignment="Center" IsReadOnly="True" MouseDoubleClick="dgReceipts_MouseDoubleClick">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="เลขที่ใบเสร็จรับเงิน" Binding="{Binding ReceiptNo}"/>
-                    <DataGridTextColumn Header="เลขที่ห้อง" Binding="{Binding Room.RoomNo}"/>
+                    <DataGridTextColumn Header="เลขที่ห้อง" Binding="{Binding RoomNo}"/>
                     <DataGridTextColumn Header="เดือน" Binding="{Binding MonthNo}"/>
                     <DataGridTextColumn Header="ปี" Binding="{Binding RcpDate.Year}"/>
-                    <DataGridTextColumn Header="เลขที่ใบแจ้งหนี้" Binding="{Binding Invoice.InvoiceNo}"/>
+                    <DataGridTextColumn Header="เลขที่ใบแจ้งหนี้" Binding="{Binding InvoiceNo}"/>
                     <DataGridTextColumn Header="จำนวนเงินรวม" Binding="{Binding GrandTotal}"/>
                 </DataGrid.Columns>
             </DataGrid>

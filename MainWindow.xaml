@@ -17,6 +17,7 @@
             </MenuItem>
             <MenuItem Header="จัดการเอกสาร" Background="#FFF0F0F0">
                 <MenuItem Name="mInvoiceData" Header="ใบแจ้งหนี้" Click="mInvoiceData_Click"/>
+                <MenuItem Name="mReceiptData" Header="ใบเสร็จรับเงิน" Click="mReceiptData_Click"/>
             </MenuItem>
         </Menu>
         <Grid>

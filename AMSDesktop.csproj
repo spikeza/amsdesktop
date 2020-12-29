@@ -134,6 +134,9 @@
     <Compile Include="UI\Invoice\Invoice.xaml.cs">
       <DependentUpon>Invoice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Invoice\UpdateInvoice.xaml.cs">
+      <DependentUpon>UpdateInvoice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Invoice\Invoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Invoice\UpdateInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

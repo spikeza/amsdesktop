@@ -114,6 +114,58 @@ namespace AMSDesktop.DAL.Repository
             }
         }
 
+        public Invoice GetInvoice(long invoiceId)
+        {
+            Invoice invoice;
+            string sqlCommand = @"select * from invoices where invoiceId = @param1";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@param1", invoiceId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (reader.Read())
+                        {
+                            invoice = new Invoice()
+                            {
+                                InvoiceId = long.Parse(reader["InvoiceId"].ToString()),
+                                ApartmentId = long.Parse(reader["ApartmentId"].ToString()),
+                                InvoiceNo = reader["InvoiceNo"].ToString(),
+                                Room = new RoomsRepository().GetRoom(long.Parse(reader["RoomId"].ToString())),
+                                MonthNo = long.Parse(reader["MonthNo"].ToString()),
+                                InvDate = DateTime.Parse(reader["InvDate"].ToString()),
+                                WMeterStart = long.Parse(reader["WMeterStart"].ToString()),
+                                EMeterStart = long.Parse(reader["EMeterStart"].ToString()),
+                                WUsedUnit = long.Parse(reader["WUsedUnit"].ToString()),
+                                EUsedUnit = long.Parse(reader["EUsedUnit"].ToString()),
+                                TelCost = Decimal.Parse(reader["TelCost"].ToString()),
+                                WUnit = Decimal.Parse(reader["WUnit"].ToString()),
+                                EUnit = Decimal.Parse(reader["EUnit"].ToString()),
+                                ImproveText = reader["ImproveText"].ToString(),
+                                ImproveCost = Decimal.Parse(reader["ImproveCost"].ToString()),
+                                Comment = reader["Comment"].ToString(),
+                                Paid = bool.Parse(reader["Paid"].ToString()),
+                                TotalText = reader["TotalText"].ToString(),
+                                GrandTotal = Single.Parse(reader["GrandTotal"].ToString()),
+                                GrandTotalText = reader["GrandTotalText"].ToString()
+                            };
+
+                            return invoice;
+                        }
+
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         public List<InvoiceDataGridView> SearchInvoicesForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate, long apartmentId)
         {
             List<InvoiceDataGridView> invoices = new List<InvoiceDataGridView>();
@@ -237,6 +289,41 @@ namespace AMSDesktop.DAL.Repository
                         command.Parameters.AddWithValue("@TotalText", invoice.TotalText);
                         command.Parameters.AddWithValue("@GrandTotal", invoice.GrandTotal);
                         command.Parameters.AddWithValue("@GrandTotalText", invoice.GrandTotalText);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        public void UpdateInvoice(Invoice invoice)
+        {
+            string sqlCommand = "update invoices set [wUsedUnit] = @WUsedUnit, [eUsedUnit] = @EUsedUnit, [telCost] = @TelCost, " +
+                                "[improveText] = @ImproveText, [improveCost] = @ImproveCost, [comment] = @Comment, [TotalText] = @TotalText, " +
+                                "[GrandTotal] = @GrandTotal, [GrandTotalText] = @GrandTotalText " +
+                                "where [InvoiceId] = @InvoiceId";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@WUsedUnit", invoice.WUsedUnit);
+                        command.Parameters.AddWithValue("@EUsedUnit", invoice.EUsedUnit);
+                        command.Parameters.AddWithValue("@TelCost", invoice.TelCost);
+                        command.Parameters.AddWithValue("@ImproveText", invoice.ImproveText);
+                        command.Parameters.AddWithValue("@ImproveCost", invoice.ImproveCost);
+                        command.Parameters.AddWithValue("@Comment", invoice.Comment);
+                        command.Parameters.AddWithValue("@TotalText", invoice.TotalText);
+                        command.Parameters.AddWithValue("@GrandTotal", invoice.GrandTotal);
+                        command.Parameters.AddWithValue("@GrandTotalText", invoice.GrandTotalText);
+                        command.Parameters.AddWithValue("@InvoiceId", invoice.InvoiceId);
 
                         con.Open();
 

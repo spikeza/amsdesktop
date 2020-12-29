@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AMSDesktop.BLL;
+using Model = AMSDesktop.DAL.Model;
 
 namespace AMSDesktop.UI.Invoice
 {
@@ -20,6 +21,7 @@ namespace AMSDesktop.UI.Invoice
     /// </summary>
     public partial class Invoice : Window
     {
+        private Model.Invoice _selectedInvoice;
         public Invoice()
         {
             InitializeComponent();
@@ -43,7 +45,16 @@ namespace AMSDesktop.UI.Invoice
 
         private void dgInvoices_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (sender != null)
+            {
+                DataGrid grid = sender as DataGrid;
+                if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
+                {
+                    DataGridRow row = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                    _selectedInvoice = new InvoicesLogic().GetInvoice((row.Item as Model.InvoiceDataGridView).InvoiceId);
+                    UpdateInvoiceData(_selectedInvoice);
+                }
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -66,6 +77,15 @@ namespace AMSDesktop.UI.Invoice
         private string GetSearchMode()
         {
             return rbSearchByRoomNo.IsChecked.Value == true ? "RoomNo" : "InvoiceNo";
+        }
+
+        private void UpdateInvoiceData(Model.Invoice invoice)
+        {
+            UpdateInvoice updateWindow = new UpdateInvoice(invoice);
+            if (updateWindow.ShowDialog() == true)
+            {
+                dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
+            }
         }
     }
 }

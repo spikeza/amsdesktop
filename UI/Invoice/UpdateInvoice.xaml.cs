@@ -20,12 +20,11 @@ using Model = AMSDesktop.DAL.Model;
 namespace AMSDesktop.UI.Invoice
 {
     /// <summary>
-    /// Interaction logic for AddInvoice.xaml
+    /// Interaction logic for UpdateInvoice.xaml
     /// </summary>
-    public partial class AddInvoice : Window
+    public partial class UpdateInvoice : Window
     {
-        private Model.Room _selectedRoom;
-        private Model.Invoice _activeInvoice;
+        Model.Invoice _invoice;
         private CultureInfo thCulture = new CultureInfo("th-TH");
         long _waterStart;
         long _waterEnd;
@@ -44,23 +43,13 @@ namespace AMSDesktop.UI.Invoice
         Decimal _vatAmount;
         Decimal _grandTotalAmount;
         bool _isInputFormatValid;
-        public AddInvoice()
+        public UpdateInvoice(Model.Invoice invoice)
         {
             InitializeComponent();
-            PopulateFieldsOnLoad();
-            EnablePrinting(false);
-        }
-
-        private void PopulateFieldsOnLoad()
-        {
-            tbkApartmentName.Text = Global.CurrentApartment.ApartmentName;
-            tbkApartmentAddress.Text = Global.CurrentApartment.Address;
-            tbxInvoiceNo.Text = new InvoicesLogic().GetNewInvoiceNumber(Global.CurrentApartment.ApartmentId);
+            _invoice = invoice;
             PopulateRoomNoDropDown();
-            tbxMonth.Text = DateTime.Now.Month.ToString();
-            lblInvoiceDate.Content = DateTime.Now.ToString("d MMMM yyyy", thCulture);
-            tbxTelephoneAmount.Text = "0.00";
-            tbxImproveCost.Text = "0.00";
+            PopulateInvoiceData(_invoice);
+            EnablePrinting(false);
         }
 
         private void PopulateRoomNoDropDown()
@@ -71,118 +60,29 @@ namespace AMSDesktop.UI.Invoice
             cbbRoomNo.SelectedValuePath = "RoomId";
         }
 
-        private void cbbRoomNo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void PopulateInvoiceData(Model.Invoice invoice)
         {
-            if (cbbRoomNo.SelectedValue != null)
-            {
-                _selectedRoom = new RoomsLogic().GetRoom((long)cbbRoomNo.SelectedValue);
-                PopulateFieldsOnRoomSelect();
-            }
-        }
+            tbkApartmentName.Text = Global.CurrentApartment.ApartmentName;
+            tbkApartmentAddress.Text = Global.CurrentApartment.Address;
+            tbxInvoiceNo.Text = invoice.InvoiceNo;
+            cbbRoomNo.SelectedValue = invoice.Room.RoomId;
+            tbxMonth.Text = invoice.MonthNo.ToString();
+            tbxWaterStart.Text = invoice.WMeterStart.ToString();
+            tbxElectricStart.Text = invoice.EMeterStart.ToString();
+            tbxWaterEnd.Text = (invoice.WMeterStart + invoice.WUsedUnit).ToString();
+            tbxElectricEnd.Text = (invoice.EMeterStart + invoice.EUsedUnit).ToString();
+            tbxWaterUnitPrices.Text = invoice.WUnit.ToString("N2", thCulture);
+            tbxElectricUnitPrices.Text = invoice.EUnit.ToString("N2", thCulture);
+            tbxWaterUnits.Text = invoice.WUsedUnit.ToString();
+            tbxElectricUnits.Text = invoice.EUsedUnit.ToString();
+            tbxTelephoneAmount.Text = invoice.TelCost.ToString("N2", thCulture);
+            tbxMonthCost.Text = invoice.Room.MonthCost.ToString("N2", thCulture);
+            tbxImproveCost.Text = invoice.ImproveCost.ToString("N2", thCulture);
+            tbxImproveText.Text = invoice.ImproveText;
+            tbxComment.Text = invoice.Comment;
 
-        private void PopulateFieldsOnRoomSelect()
-        {
-            lblContactName.Content = _selectedRoom.Customer.ContactName;
-            tbxWaterStart.Text = _selectedRoom.WUnitStart.ToString();
-            tbxElectricStart.Text = _selectedRoom.EUnitStart.ToString();
-            tbxWaterUnitPrices.Text = Global.CurrentSystemVariable.WUnit.ToString("N2", thCulture);
-            tbxElectricUnitPrices.Text = Global.CurrentSystemVariable.EUnit.ToString("N2", thCulture);
-            tbxMonthCost.Text = _selectedRoom.MonthCost.ToString("N2", thCulture);
-        }
-
-        private void btnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            if(IsFormInputValid())
-            {
-                try
-                {
-                    Model.Invoice invoice = new Model.Invoice()
-                    {
-                        ApartmentId = Global.CurrentApartment.ApartmentId,
-                        InvoiceNo = tbxInvoiceNo.Text,
-                        Room = _selectedRoom,
-                        MonthNo = long.Parse(tbxMonth.Text),
-                        InvDate = DateTime.Now.Date,
-                        WMeterStart = _waterStart,
-                        EMeterStart = _electricStart,
-                        WUsedUnit = _waterUnit,
-                        EUsedUnit = _electricUnit,
-                        TelCost = _telephoneAmount,
-                        WUnit = _waterUnitPrices,
-                        EUnit = _electricUnitPrices,
-                        ImproveText = tbxImproveText.Text,
-                        ImproveCost = _improveCost,
-                        Comment = tbxComment.Text == "" ? " " : tbxComment.Text,
-                        Paid = false,
-                        TotalText = ThaiBahtTextUtil.ThaiBahtText(_totalAmount),
-                        GrandTotal = Decimal.ToSingle(_grandTotalAmount),
-                        GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(_grandTotalAmount)
-                    };
-                    new InvoicesLogic().AddInvoice(invoice);
-                    _activeInvoice = invoice;
-                    MessageBox.Show("การเพิ่มข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    EnablePrinting(true);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-        }
-
-        private void btnClear_Click(object sender, RoutedEventArgs e)
-        {
-            ClearForm();
-        }
-
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = true;
-        }
-
-        private void btnPrint_Click(object sender, RoutedEventArgs e)
-        {
-            if(_activeInvoice != null)
-            {
-                ReportPreviewer rp = new ReportPreviewer("InvoiceDataSet", new InvoicesLogic().GetInvoiceForPrinting(_activeInvoice), @".\Reports\Invoice.rdlc");
-                rp.ShowDialog();
-            }
-        }
-
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-        private void FloatingValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            if(((TextBox)sender).Text.Contains("."))
-            {
-                if (((TextBox)sender).Text.Substring(((TextBox)sender).Text.IndexOf('.')).Length <= 2
-                    || ((TextBox)sender).SelectionStart <= ((TextBox)sender).Text.IndexOf('.'))
-                    e.Handled = regex.IsMatch(e.Text);
-                else
-                    e.Handled = true;
-            }
-            else
-            {
-                e.Handled = regex.IsMatch(e.Text) && e.Text != ".";
-            }
-        }
-
-        private void tbxWaterEnd_TextChanged(object sender, TextChangedEventArgs e)
-        {
             CalculateAllAmounts();
         }
-
-        private void tbxElectricEnd_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            CalculateAllAmounts();
-        }
-
         private void CalculateAllAmounts()
         {
             if (!Decimal.TryParse(tbxImproveCost.Text, out _improveCost) || !Decimal.TryParse(tbxTelephoneAmount.Text, out _telephoneAmount))
@@ -231,6 +131,52 @@ namespace AMSDesktop.UI.Invoice
             }
         }
 
+
+        private void tbxWaterEnd_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CalculateAllAmounts();
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void FloatingValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            if (((TextBox)sender).Text.Contains("."))
+            {
+                if (((TextBox)sender).Text.Substring(((TextBox)sender).Text.IndexOf('.')).Length <= 2
+                    || ((TextBox)sender).SelectionStart <= ((TextBox)sender).Text.IndexOf('.'))
+                    e.Handled = regex.IsMatch(e.Text);
+                else
+                    e.Handled = true;
+            }
+            else
+            {
+                e.Handled = regex.IsMatch(e.Text) && e.Text != ".";
+            }
+        }
+
+        private void tbxElectricEnd_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CalculateAllAmounts();
+        }
+        private void SetInputTextBoxesRed(bool isRed)
+        {
+            if (isRed)
+            {
+                tbxTelephoneAmount.BorderBrush = System.Windows.Media.Brushes.Red;
+                tbxImproveCost.BorderBrush = System.Windows.Media.Brushes.Red;
+            }
+            else
+            {
+                tbxTelephoneAmount.ClearValue(Border.BorderBrushProperty);
+                tbxImproveCost.ClearValue(Border.BorderBrushProperty);
+            }
+        }
         private void tbxTelephoneAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
             CalculateAllAmounts();
@@ -244,50 +190,6 @@ namespace AMSDesktop.UI.Invoice
         private void tbxImproveCost_TextChanged(object sender, TextChangedEventArgs e)
         {
             CalculateAllAmounts();
-        }
-
-        private void ClearForm()
-        {
-            _selectedRoom = null;
-            _waterStart = 0;
-            _waterEnd = 0;
-            _waterUnit = 0;
-            _waterUnitPrices = 0;
-            _waterAmount = 0;
-            _electricStart = 0;
-            _electricEnd = 0;
-            _electricUnit = 0;
-            _electricUnitPrices = 0;
-            _electricAmount = 0;
-            _telephoneAmount = 0;
-            _monthCost = 0;
-            _improveCost = 0;
-            _totalAmount = 0;
-            _vatAmount = 0;
-            _grandTotalAmount = 0;
-            tbxInvoiceNo.Text = "";
-            cbbRoomNo.SelectedItem = null;
-            tbxMonth.Text = "";
-            tbxWaterStart.Text = "";
-            tbxWaterEnd.Text = "";
-            tbxWaterUnits.Text = "";
-            tbxWaterUnitPrices.Text = "";
-            tbxWaterAmount.Text = "";
-            tbxElectricStart.Text = "";
-            tbxElectricEnd.Text = "";
-            tbxElectricUnits.Text = "";
-            tbxElectricUnitPrices.Text = "";
-            tbxElectricAmount.Text = "";
-            tbxTelephoneAmount.Text = "";
-            tbxMonthCost.Text = "";
-            tbxImproveCost.Text = "";
-            tbxImproveText.Text = "ค่าใช้จ่ายอื่น ๆ";
-            tbxTotal.Text = "";
-            tbxVATAmount.Text = "";
-            tbxGrandTotal.Text = "";
-            lblGrandTotalText.Content = "";
-            tbxComment.Text = "";
-            PopulateFieldsOnLoad();
         }
 
         private bool IsFormInputValid()
@@ -326,6 +228,46 @@ namespace AMSDesktop.UI.Invoice
             return true;
 
         }
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsFormInputValid())
+            {
+                try
+                {
+                    _invoice.WUsedUnit = _waterUnit;
+                    _invoice.EUsedUnit = _electricUnit;
+                    _invoice.TelCost = _telephoneAmount;
+                    _invoice.ImproveCost = _improveCost;
+                    _invoice.ImproveText = tbxImproveText.Text;
+                    _invoice.Comment = tbxComment.Text == "" ? " " : tbxComment.Text;
+                    _invoice.TotalText = ThaiBahtTextUtil.ThaiBahtText(_totalAmount);
+                    _invoice.GrandTotal = Decimal.ToSingle(_grandTotalAmount);
+                    _invoice.GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(_grandTotalAmount);
+                    new InvoicesLogic().UpdateInvoice(_invoice);
+                    MessageBox.Show("การแก้ไขข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    EnablePrinting(true);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            if (_invoice != null)
+            {
+                ReportPreviewer rp = new ReportPreviewer("InvoiceDataSet", new InvoicesLogic().GetInvoiceForPrinting(_invoice), @".\Reports\Invoice.rdlc");
+                rp.ShowDialog();
+            }
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
 
         private void EnablePrinting(bool isEnable)
         {
@@ -340,8 +282,7 @@ namespace AMSDesktop.UI.Invoice
                 tbxImproveCost.IsReadOnly = true;
                 tbxImproveText.IsReadOnly = true;
                 tbxComment.IsReadOnly = true;
-                btnAdd.IsEnabled = false;
-                btnClear.IsEnabled = false;
+                btnUpdate.IsEnabled = false;
                 btnPrint.IsEnabled = true;
             }
             else
@@ -355,23 +296,8 @@ namespace AMSDesktop.UI.Invoice
                 tbxImproveCost.IsReadOnly = false;
                 tbxImproveText.IsReadOnly = false;
                 tbxComment.IsReadOnly = false;
-                btnAdd.IsEnabled = true;
-                btnClear.IsEnabled = true;
+                btnUpdate.IsEnabled = true;
                 btnPrint.IsEnabled = false;
-            }
-        }
-
-        private void SetInputTextBoxesRed(bool isRed)
-        {
-            if (isRed)
-            {
-                tbxTelephoneAmount.BorderBrush = System.Windows.Media.Brushes.Red;
-                tbxImproveCost.BorderBrush = System.Windows.Media.Brushes.Red;
-            }
-            else
-            {
-                tbxTelephoneAmount.ClearValue(Border.BorderBrushProperty);
-                tbxImproveCost.ClearValue(Border.BorderBrushProperty);
             }
         }
     }

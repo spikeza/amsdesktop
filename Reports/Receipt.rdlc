@@ -1703,6 +1703,15 @@
                     </TextRuns>
                     <Style />
                   </Paragraph>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=Fields!Comment.Value</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox56</rd:DefaultName>
                 <Height>1in</Height>
@@ -2226,18 +2235,6 @@
           </Border>
         </Style>
       </Rectangle>
-      <Line Name="Line1">
-        <Top>5.645in</Top>
-        <Left>0.04072in</Left>
-        <Height>0in</Height>
-        <Width>7.71282in</Width>
-        <ZIndex>1</ZIndex>
-        <Style>
-          <Border>
-            <Style>Dashed</Style>
-          </Border>
-        </Style>
-      </Line>
       <Rectangle Name="Rectangle10">
         <ReportItems>
           <Textbox Name="Textbox61">
@@ -3939,6 +3936,15 @@
                     </TextRuns>
                     <Style />
                   </Paragraph>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=Fields!Comment.Value</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox56</rd:DefaultName>
                 <Height>1in</Height>
@@ -4456,7 +4462,7 @@
         <Left>0.04951in</Left>
         <Height>4.17361in</Height>
         <Width>7.73787in</Width>
-        <ZIndex>2</ZIndex>
+        <ZIndex>1</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>

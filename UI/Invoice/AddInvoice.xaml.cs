@@ -76,7 +76,15 @@ namespace AMSDesktop.UI.Invoice
             if (cbbRoomNo.SelectedValue != null)
             {
                 _selectedRoom = new RoomsLogic().GetRoom((long)cbbRoomNo.SelectedValue);
-                PopulateFieldsOnRoomSelect();
+                if (!new InvoicesLogic().IsThisMonthInvoiceExists(_selectedRoom.RoomId, long.Parse(tbxMonth.Text), DateTime.Now.Year))
+                {
+                    PopulateFieldsOnRoomSelect();
+                }
+                else
+                {
+                    ClearForm();
+                    MessageBox.Show("มีข้อมูลใบแจ้งหนี้ของเดือนนี้ในระบบแล้ว", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -93,7 +101,7 @@ namespace AMSDesktop.UI.Invoice
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if(IsFormInputValid())
+            if (IsFormInputValid())
             {
                 try
                 {

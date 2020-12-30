@@ -150,6 +150,9 @@
     <Compile Include="UI\Receipt\Receipt.xaml.cs">
       <DependentUpon>Receipt.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Receipt\UpdateReceipt.xaml.cs">
+      <DependentUpon>UpdateReceipt.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\ReportPreviewer.xaml.cs">
       <DependentUpon>ReportPreviewer.xaml</DependentUpon>
     </Compile>
@@ -226,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Receipt\Receipt.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Receipt\UpdateReceipt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

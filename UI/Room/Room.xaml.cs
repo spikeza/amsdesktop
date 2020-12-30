@@ -52,7 +52,7 @@ namespace AMSDesktop.UI.Room
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            var selectedRoom = dgRooms.SelectedItem as Model.Room;
+            var selectedRoom = dgRooms.SelectedItem != null ? dgRooms.SelectedItem as Model.Room : null;
             if (selectedRoom != null)
             {
                 UpdateRoomData(selectedRoom);
@@ -67,7 +67,7 @@ namespace AMSDesktop.UI.Room
         {
             try
             {
-                var selectedRoom = dgRooms.SelectedItem as Model.Room;
+                var selectedRoom = dgRooms.SelectedItem != null ? dgRooms.SelectedItem as Model.Room : null;
                 if (selectedRoom != null)
                 {
                     if (MessageBox.Show("ยืนยันที่จะลบข้อมูลห้องพัก เลขที่ห้อง " + selectedRoom.RoomNo, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)

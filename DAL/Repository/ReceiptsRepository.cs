@@ -62,6 +62,49 @@ namespace AMSDesktop.DAL.Repository
             }
         }
 
+        public Receipt GetReceipt(long receiptId)
+        {
+            Receipt receipt;
+            string sqlCommand = @"select * from receipts where receiptId = @param1";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@param1", receiptId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (reader.Read())
+                        {
+                            receipt = new Receipt()
+                            {
+                                ReceiptId = long.Parse(reader["ReceiptId"].ToString()),
+                                Invoice = new InvoicesRepository().GetInvoice(long.Parse(reader["InvoiceId"].ToString())),
+                                ApartmentId = long.Parse(reader["ApartmentId"].ToString()),
+                                ReceiptNo = reader["ReceiptNo"].ToString(),
+                                InterestUnit = Decimal.Parse(reader["InterestUnit"].ToString()),
+                                AmountDay = long.Parse(reader["AmountDay"].ToString()),
+                                RcpDate = DateTime.Parse(reader["RcpDate"].ToString()),
+                                Comment = reader["Comment"].ToString(),
+                                TotalText = reader["TotalText"].ToString(),
+                                GrandTotal = Single.Parse(reader["GrandTotal"].ToString()),
+                                GrandTotalText = reader["GrandTotalText"].ToString()
+                            };
+
+                            return receipt;
+                        }
+
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         public List<ReceiptDataGridView> SearchReceiptsForDataGrid(string searchValue, string searchMode, DateTime fromDate, DateTime toDate, long apartmentId)
         {
             List<ReceiptDataGridView> receipts = new List<ReceiptDataGridView>();
@@ -186,6 +229,83 @@ namespace AMSDesktop.DAL.Repository
                     {
                         throw ex;
                     }
+                }
+            }
+        }
+
+        public void UpdateReceipt(Receipt receipt)
+        {
+            string sqlCommand = "update receipts set [Comment] = @Comment " +
+                                "where [ReceiptId] = @ReceiptId";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Comment", receipt.Comment);
+                        command.Parameters.AddWithValue("@ReceiptId", receipt.ReceiptId);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        public void DeleteReceipt(Receipt receipt)
+        {
+            string sqlCommand = "delete from receipts where [ReceiptId] = @ReceiptId";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@ReceiptId", receipt.ReceiptId);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        public bool IsThisMonthReceiptExists(long roomId, long month, int year)
+        {
+            string sqlCommand = "select count(ReceiptId) as Num from receipts " +
+                                "inner join invoices on receipts.InvoiceId = invoices.InvoiceId " +
+                                "where invoices.roomId = @RoomId and invoices.monthNo = @MonthNo " +
+                                "and Year(RcpDate) = @Year";
+
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@RoomId", roomId);
+                    command.Parameters.AddWithValue("@MonthNo", month);
+                    command.Parameters.AddWithValue("@Year", year);
+                    con.Open();
+
+                    if ((int)command.ExecuteScalar() > 0)
+                        return true;
+                    else
+                        return false;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
             }
         }

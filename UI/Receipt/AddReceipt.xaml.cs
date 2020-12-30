@@ -74,14 +74,7 @@ namespace AMSDesktop.UI.Receipt
 
         private void cbbRoomNo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (IsMonthInputValid())
-            {
-                if (cbbRoomNo.SelectedValue != null)
-                {
-                    _selectedRoom = new RoomsLogic().GetRoom((long)cbbRoomNo.SelectedValue);
-                    PopulateFieldsOnRoomSelect();
-                }
-            }
+            PopulateReceiptData();
         }
 
         private void PopulateFieldsOnRoomSelect()
@@ -154,16 +147,6 @@ namespace AMSDesktop.UI.Receipt
 
             tbxGrandTotal.Text = _grandTotalAmount.ToString("N2", thCulture);
             lblGrandTotalText.Content = ThaiBahtTextUtil.ThaiBahtText(_grandTotalAmount);
-        }
-
-        private bool IsRelatedInvoiceExists(long roomId)
-        {
-            _relatedInvoice = new InvoicesLogic().GetLatestInvoice(roomId);
-            if (_relatedInvoice.InvDate.Year == DateTime.Now.Year)
-            {
-
-            }
-            return false;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -263,14 +246,7 @@ namespace AMSDesktop.UI.Receipt
         {
             if (e.Key == Key.Enter)
             {
-                if (IsMonthInputValid())
-                {
-                    if (cbbRoomNo.SelectedValue != null)
-                    {
-                        _selectedRoom = new RoomsLogic().GetRoom((long)cbbRoomNo.SelectedValue);
-                        PopulateFieldsOnRoomSelect();
-                    }
-                }
+                PopulateReceiptData();
             }
         }
 
@@ -351,6 +327,27 @@ namespace AMSDesktop.UI.Receipt
                 btnAdd.IsEnabled = true;
                 btnClear.IsEnabled = true;
                 btnPrint.IsEnabled = false;
+            }
+        }
+
+        private void PopulateReceiptData()
+        {
+            if (IsMonthInputValid())
+            {
+                if (cbbRoomNo.SelectedValue != null)
+                {
+                    _selectedRoom = new RoomsLogic().GetRoom((long)cbbRoomNo.SelectedValue);
+                    int receiptYear = (DateTime.Now.Month == 1 && _selectedMonth == 12) ? DateTime.Now.Year - 1 : DateTime.Now.Year;
+                    if (!new ReceiptsLogic().IsThisMonthReceiptExists(_selectedRoom.RoomId, long.Parse(tbxMonth.Text), receiptYear))
+                    {
+                        PopulateFieldsOnRoomSelect();
+                    }
+                    else
+                    {
+                        ClearForm();
+                        MessageBox.Show("มีข้อมูลใบเสร็จรับเงินของเดือนนี้ในระบบแล้ว", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
         }
     }

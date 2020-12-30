@@ -98,7 +98,7 @@ namespace AMSDesktop.UI.Customer
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            selectedCustomer = dgCustomers.SelectedItem as Model.Customer;
+            selectedCustomer = dgCustomers.SelectedItem != null ? dgCustomers.SelectedItem as Model.Customer : null;
             if (selectedCustomer != null)
             {
                 UpdateCustomerData(selectedCustomer);
@@ -113,7 +113,7 @@ namespace AMSDesktop.UI.Customer
         {
             try
             {
-                selectedCustomer = dgCustomers.SelectedItem as Model.Customer;
+                selectedCustomer = dgCustomers.SelectedItem != null ? dgCustomers.SelectedItem as Model.Customer : null;
                 if (selectedCustomer != null)
                 {
                     if (MessageBox.Show("ยืนยันที่จะลบข้อมูลผู้เช่า " + selectedCustomer.ContactName, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)

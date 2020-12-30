@@ -45,7 +45,7 @@ namespace AMSDesktop.UI.Apartment
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            var selectedApartment = dgApartments.SelectedItem as Model.Apartment;
+            var selectedApartment = dgApartments.SelectedItem != null ? dgApartments.SelectedItem as Model.Apartment : null;
             if (selectedApartment != null)
             {
                 UpdateApartmentData(selectedApartment);
@@ -69,7 +69,7 @@ namespace AMSDesktop.UI.Apartment
         {
             try
             {
-                var selectedApartment = dgApartments.SelectedItem as Model.Apartment;
+                var selectedApartment = dgApartments.SelectedItem != null ? dgApartments.SelectedItem as Model.Apartment : null;
                 if (selectedApartment != null)
                 {
                     if (MessageBox.Show("ยืนยันที่จะลบข้อมูลอพาร์ตเมนต์ " + selectedApartment.ApartmentName, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)

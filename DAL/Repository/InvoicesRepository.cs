@@ -467,5 +467,32 @@ namespace AMSDesktop.DAL.Repository
                 }
             }
         }
+
+        public bool IsThisMonthInvoiceExists(long roomId, long month, int year)
+        {
+            string sqlCommand = "select count(InvoiceId) as Num from invoices where roomId = @RoomId and monthNo = @MonthNo " +
+                                "and Year(InvDate) = @Year";
+
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@RoomId", roomId);
+                    command.Parameters.AddWithValue("@MonthNo", month);
+                    command.Parameters.AddWithValue("@Year", year);
+                    con.Open();
+
+                    if ((int)command.ExecuteScalar() > 0)
+                        return true;
+                    else
+                        return false;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 }

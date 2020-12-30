@@ -95,5 +95,10 @@ namespace AMSDesktop.BLL
 
             return invoices;
         }
+
+        public bool IsThisMonthInvoiceExists(long roomId, long month, int year)
+        {
+            return new InvoicesRepository().IsThisMonthInvoiceExists(roomId, month, year);
+        }
     }
 }

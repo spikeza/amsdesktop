@@ -64,12 +64,12 @@ namespace AMSDesktop.UI.Invoice
         {
             AddInvoice addInvoiceWindow = new AddInvoice();
             addInvoiceWindow.ShowDialog();
-            dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
+            SearchInvoice();
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            var selectedInvoice = new InvoicesLogic().GetInvoice((dgInvoices.SelectedItem as Model.InvoiceDataGridView).InvoiceId);
+            var selectedInvoice = dgInvoices.SelectedItem != null ? new InvoicesLogic().GetInvoice((dgInvoices.SelectedItem as Model.InvoiceDataGridView).InvoiceId) : null;
             if (selectedInvoice != null)
             {
                 UpdateInvoiceData(selectedInvoice);
@@ -84,7 +84,7 @@ namespace AMSDesktop.UI.Invoice
         {
             try
             {
-                var selectedInvoice = new InvoicesLogic().GetInvoice((dgInvoices.SelectedItem as Model.InvoiceDataGridView).InvoiceId);
+                var selectedInvoice = dgInvoices.SelectedItem != null ? new InvoicesLogic().GetInvoice((dgInvoices.SelectedItem as Model.InvoiceDataGridView).InvoiceId) : null;
                 if (selectedInvoice != null)
                 {
                     if (MessageBox.Show("ยืนยันที่จะลบข้อมูลใบแจ้งหนี้ " + selectedInvoice.InvoiceNo, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
@@ -119,10 +119,8 @@ namespace AMSDesktop.UI.Invoice
         private void UpdateInvoiceData(Model.Invoice invoice)
         {
             UpdateInvoice updateWindow = new UpdateInvoice(invoice);
-            if (updateWindow.ShowDialog() == true)
-            {
-                dgInvoices.ItemsSource = new InvoicesLogic().GetInvoicesForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
-            }
+            updateWindow.ShowDialog();
+            SearchInvoice();
         }
 
         private bool IsDateCriteriaValid()

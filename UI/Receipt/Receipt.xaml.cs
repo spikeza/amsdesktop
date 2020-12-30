@@ -54,24 +54,68 @@ namespace AMSDesktop.UI.Receipt
 
         private void dgReceipts_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (sender != null)
+            {
+                DataGrid grid = sender as DataGrid;
+                if (grid != null && grid.SelectedItems != null && grid.SelectedItems.Count == 1)
+                {
+                    DataGridRow row = grid.ItemContainerGenerator.ContainerFromItem(grid.SelectedItem) as DataGridRow;
+                    _selectedReceipt = new ReceiptsLogic().GetReceipt((row.Item as Model.ReceiptDataGridView).ReceiptId);
+                    UpdateReceiptData(_selectedReceipt);
+                }
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             AddReceipt addReceiptWindow = new AddReceipt();
             addReceiptWindow.ShowDialog();
-            dgReceipts.ItemsSource = new ReceiptsLogic().GetReceiptsForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
+            SearchReceipt();
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            var selectedReceipt = dgReceipts.SelectedItem != null ? new ReceiptsLogic().GetReceipt((dgReceipts.SelectedItem as Model.ReceiptDataGridView).ReceiptId) : null;
+            if (selectedReceipt != null)
+            {
+                UpdateReceiptData(selectedReceipt);
+            }
+            else
+            {
+                MessageBox.Show("กรุณาเลือกข้อมูลที่จะแก้ไข", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var selectedReceipt = dgReceipts.SelectedItem != null ? new ReceiptsLogic().GetReceipt((dgReceipts.SelectedItem as Model.ReceiptDataGridView).ReceiptId) : null;
+                if (selectedReceipt != null)
+                {
+                    if (MessageBox.Show("ยืนยันที่จะลบข้อมูลใบแจ้งหนี้ " + selectedReceipt.ReceiptNo, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                    {
+                        ReceiptsLogic l = new ReceiptsLogic();
+                        l.DeleteReceipt(selectedReceipt);
+                        SearchReceipt();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("กรุณาเลือกข้อมูลที่จะลบ", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
+        private void UpdateReceiptData(Model.Receipt receipt)
+        {
+            UpdateReceipt updateWindow = new UpdateReceipt(receipt);
+            updateWindow.ShowDialog();
+            SearchReceipt();
         }
 
         private bool IsDateCriteriaValid()

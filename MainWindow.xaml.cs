@@ -98,5 +98,11 @@ namespace AMSDesktop
             UI.Reporting.ReceiptBatch receiptBatchWindow = new UI.Reporting.ReceiptBatch();
             receiptBatchWindow.ShowDialog();
         }
+
+        private void mUsers_Click(object sender, RoutedEventArgs e)
+        {
+            UI.User.User userWindow = new UI.User.User();
+            userWindow.ShowDialog();
+        }
     }
 }

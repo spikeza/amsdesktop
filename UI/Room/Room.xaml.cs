@@ -73,7 +73,7 @@ namespace AMSDesktop.UI.Room
                     if (MessageBox.Show("ยืนยันที่จะลบข้อมูลห้องพัก เลขที่ห้อง " + selectedRoom.RoomNo, "ยืนยันการลบข้อมูล", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
                     {
                         RoomsLogic r = new RoomsLogic();
-                        r.DaleteRoom(selectedRoom);
+                        r.DeleteRoom(selectedRoom);
                         dgRooms.ItemsSource = new RoomsLogic().GetRooms(Global.CurrentApartment.ApartmentId);
                     }
                 }

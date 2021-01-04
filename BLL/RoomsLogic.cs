@@ -39,7 +39,7 @@ namespace AMSDesktop.BLL
             new RoomsRepository().UpdateRoom(room);
         }
 
-        public void DaleteRoom(Room room)
+        public void DeleteRoom(Room room)
         {
             new RoomsRepository().DeleteRoom(room);
         }

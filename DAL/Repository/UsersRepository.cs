@@ -89,5 +89,108 @@ namespace AMSDesktop.DAL.Repository
                 }
             }
         }
+
+        public void AddUser(User user)
+        {
+            string sqlCommand = "insert into users ([Username], [Firstname], [Lastname], [Password], [Salt]) " +
+                                "values(@Username, @Firstname, @Lastname, @Password, @Salt)";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Username", user.Username);
+                        command.Parameters.AddWithValue("@Firstname", user.Firstname);
+                        command.Parameters.AddWithValue("@Lastname", user.Lastname);
+                        command.Parameters.AddWithValue("@Password", user.Password);
+                        command.Parameters.AddWithValue("@Salt", user.Salt);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        public void UpdateUser(User user)
+        {
+            string sqlCommand = "update users set [Firstname] = @Firstname, [Lastname] = @Lastname " +
+                                "where [Username] = @Username";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Firstname", user.Firstname);
+                        command.Parameters.AddWithValue("@Lastname", user.Lastname);
+                        command.Parameters.AddWithValue("@Username", user.Username);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        public void DeleteUser(User user)
+        {
+            string sqlCommand = "delete from users where [Username] = @Username";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Username", user.Username);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        public void ChangePassword(User user)
+        {
+            string sqlCommand = "update users set [Password] = @Password, [Salt] = @Salt " +
+                                "where [Username] = @Username";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Password", user.Password);
+                        command.Parameters.AddWithValue("@Salt", user.Salt);
+                        command.Parameters.AddWithValue("@Username", user.Username);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }

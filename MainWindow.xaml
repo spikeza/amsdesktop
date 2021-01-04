@@ -26,6 +26,7 @@
             </MenuItem>
             <MenuItem Header="ตั้งค่าระบบ" Background="#FFF0F0F0">
                 <MenuItem Name="mSelectApartment" Header="เลือกอพาร์ตเมนต์" Click="mSelectApartment_Click"/>
+                <MenuItem Name="mUsers" Header="จัดการข้อมูลผู้ใช้ระบบ" Click="mUsers_Click"/>
                 <Separator/>
                 <MenuItem Name="mSystemVariables" Header="ตั้งค่าเกี่ยวกับอาคารห้องเช่า" Click="mSystemVariables_Click" />
             </MenuItem>

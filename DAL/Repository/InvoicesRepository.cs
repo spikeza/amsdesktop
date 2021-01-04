@@ -343,7 +343,7 @@ namespace AMSDesktop.DAL.Repository
                         {
                             lastInvoiceNo = reader["InvoiceNo"].ToString();
 
-                            if (lastInvoiceNo.Substring(0, 4) == DateTime.Now.ToString("yyMM-", thCulture))
+                            if (lastInvoiceNo.Substring(0, 4) == DateTime.Now.ToString("yyMM", thCulture))
                             {
                                 int next = int.Parse(lastInvoiceNo.Substring(5).TrimStart('0')) + 1;
                                 nextInvoiceNo = DateTime.Now.ToString("yyMM-", thCulture) + next.ToString().PadLeft(4, '0');

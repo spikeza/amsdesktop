@@ -203,7 +203,9 @@ namespace AMSDesktop.UI.Receipt
         {
             if (_activeReceipt != null)
             {
-                ReportPreviewer rp = new ReportPreviewer("ReceiptDataSet", new ReceiptsLogic().GetReceiptForPrinting(_activeReceipt), @".\Reports\Receipt.rdlc");
+                ReportPreviewer rp = new ReportPreviewer();
+                rp.SetDataSet("ReceiptDataSet", new ReceiptsLogic().GetReceiptForPrinting(_activeReceipt));
+                rp.SetReportPath(@".\Reports\Receipt.rdlc");
                 rp.ShowDialog();
             }
         }

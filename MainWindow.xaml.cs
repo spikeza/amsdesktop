@@ -74,5 +74,29 @@ namespace AMSDesktop
             UI.Receipt.Receipt receiptWindow = new UI.Receipt.Receipt();
             receiptWindow.ShowDialog();
         }
+
+        private void mIncomeSummaryReport_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Reporting.IncomeSummaryReport reportWindow = new UI.Reporting.IncomeSummaryReport();
+            reportWindow.ShowDialog();
+        }
+
+        private void mSystemVariables_Click(object sender, RoutedEventArgs e)
+        {
+            UI.SystemVariable.SystemVariable varsWindow = new UI.SystemVariable.SystemVariable();
+            varsWindow.ShowDialog();
+        }
+
+        private void mInvoiceBatch_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Reporting.InvoiceBatch invoiceBatchWindow = new UI.Reporting.InvoiceBatch();
+            invoiceBatchWindow.ShowDialog();
+        }
+
+        private void mReceiptBatch_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Reporting.ReceiptBatch receiptBatchWindow = new UI.Reporting.ReceiptBatch();
+            receiptBatchWindow.ShowDialog();
+        }
     }
 }

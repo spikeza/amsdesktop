@@ -16,6 +16,11 @@ namespace AMSDesktop.BLL
             return new ReceiptsRepository().GetReceiptsForDataGrid(fromDate, toDate, apartmentId);
         }
 
+        public List<Receipt> GetReceipts(DateTime fromDate, DateTime toDate, long apartmentId)
+        {
+            return new ReceiptsRepository().GetReceipts(fromDate, toDate, apartmentId);
+        }
+
         public Receipt GetReceipt(long receiptId)
         {
             return new ReceiptsRepository().GetReceipt(receiptId);
@@ -85,6 +90,11 @@ namespace AMSDesktop.BLL
         public bool IsThisMonthReceiptExists(long roomId, long month, int year)
         {
             return new ReceiptsRepository().IsThisMonthReceiptExists(roomId, month, year);
+        }
+
+        public List<IncomeSummaryRecord> GetIncomeSummaryRecords(int month, int year, long apartmentId)
+        {
+            return new ReceiptsRepository().GetIncomeSummaryRecords(month, year, apartmentId);
         }
     }
 }

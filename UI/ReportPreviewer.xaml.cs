@@ -20,20 +20,17 @@ namespace AMSDesktop.UI
     /// </summary>
     public partial class ReportPreviewer : Window
     {
-        string _dataSetName;
-        object _datasetValue;
-        string _reportPath;
+        private string _dataSetName;
+        private object _datasetValue;
+        private string _reportPath;
+        private List<ReportParameter> _reportParameters;
+        private bool _isReportViewerLoaded;
 
-        public ReportPreviewer(string dataSetName, object datasetValue, string reportPath)
+        public ReportPreviewer()
         {
             InitializeComponent();
             rvMain.Load += ReportViewer_Load;
-            _dataSetName = dataSetName;
-            _datasetValue = datasetValue;
-            _reportPath = reportPath;
         }
-
-        private bool _isReportViewerLoaded;
 
         private void ReportViewer_Load(object sender, EventArgs e)
         {
@@ -45,19 +42,34 @@ namespace AMSDesktop.UI
                 reportDataSource.Value = _datasetValue;
                 this.rvMain.LocalReport.DataSources.Add(reportDataSource);
                 this.rvMain.LocalReport.ReportPath = _reportPath;
-                //this.rvMain.LocalReport.ReportPath = @".\Reports\Invoice.rdlc";
-
-                //dataset.EndInit();
-
-                //fill data into adventureWorksDataSet
-                //AdventureWorks2008R2DataSetTableAdapters.SalesOrderDetailTableAdapter salesOrderDetailTableAdapter = new AdventureWorks2008R2DataSetTableAdapters.SalesOrderDetailTableAdapter();
-                //salesOrderDetailTableAdapter.ClearBeforeFill = true;
-                //salesOrderDetailTableAdapter.Fill(dataset.SalesOrderDetail);
+                if (_reportParameters != null && _reportParameters.Count > 0)
+                {
+                    foreach (var p in _reportParameters)
+                    {
+                        this.rvMain.LocalReport.SetParameters(p);
+                    }
+                }
 
                 rvMain.RefreshReport();
 
                 _isReportViewerLoaded = true;
             }
+        }
+
+        public void SetDataSet(string dataSetName, object dataSetValue)
+        {
+            _dataSetName = dataSetName;
+            _datasetValue = dataSetValue;
+        }
+
+        public void SetReportPath(string path)
+        {
+            _reportPath = path;
+        }
+
+        public void SetParameters(List<ReportParameter> parameters)
+        {
+            _reportParameters = parameters;
         }
     }
 }

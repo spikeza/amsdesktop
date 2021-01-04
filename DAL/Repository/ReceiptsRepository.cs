@@ -19,6 +19,51 @@ namespace AMSDesktop.DAL.Repository
             connectionString = ConfigurationManager.ConnectionStrings["AMSDesktop.Properties.Settings.amsdbConnectionString"].ConnectionString;
         }
 
+        public List<Receipt> GetReceipts(DateTime fromDate, DateTime toDate, long apartmentId)
+        {
+            List<Receipt> receipts = new List<Receipt>();
+            string sqlCommand = "select * from receipts " +
+                "where RcpDate >= @fromDate and RcpDate <= @toDate and ApartmentId = @apartmentId " +
+                "order by left(ReceiptNo,4) desc, right(ReceiptNo,4)";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@fromDate", fromDate);
+                    command.Parameters.AddWithValue("@toDate", toDate);
+                    command.Parameters.AddWithValue("@apartmentId", apartmentId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader())
+                    {
+                        foreach (var item in reader)
+                        {
+                            Receipt r = new Receipt()
+                            {
+                                ReceiptId = long.Parse(reader["ReceiptId"].ToString()),
+                                Invoice = new InvoicesRepository().GetInvoice(long.Parse(reader["InvoiceId"].ToString())),
+                                ApartmentId = long.Parse(reader["ApartmentId"].ToString()),
+                                ReceiptNo = reader["ReceiptNo"].ToString(),
+                                InterestUnit = Decimal.Parse(reader["InterestUnit"].ToString()),
+                                AmountDay = long.Parse(reader["AmountDay"].ToString()),
+                                RcpDate = DateTime.Parse(reader["RcpDate"].ToString()),
+                                Comment = reader["Comment"].ToString(),
+                                TotalText = reader["TotalText"].ToString(),
+                                GrandTotal = Single.Parse(reader["GrandTotal"].ToString()),
+                                GrandTotalText = reader["GrandTotalText"].ToString()
+                            };
+                            receipts.Add(r);
+                        }
+                    }
+                    return receipts;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         public List<ReceiptDataGridView> GetReceiptsForDataGrid(DateTime fromDate, DateTime toDate, long apartmentId)
         {
             List<ReceiptDataGridView> receipts = new List<ReceiptDataGridView>();
@@ -176,7 +221,7 @@ namespace AMSDesktop.DAL.Repository
                         {
                             lastReceiptNo = reader["ReceiptNo"].ToString();
 
-                            if (lastReceiptNo.Substring(0, 4) == DateTime.Now.ToString("yyMM-", thCulture))
+                            if (lastReceiptNo.Substring(0, 4) == DateTime.Now.ToString("yyMM", thCulture))
                             {
                                 int next = int.Parse(lastReceiptNo.Substring(5).TrimStart('0')) + 1;
                                 nextReceiptNo = DateTime.Now.ToString("yyMM-", thCulture) + next.ToString().PadLeft(4, '0');
@@ -302,6 +347,46 @@ namespace AMSDesktop.DAL.Repository
                         return true;
                     else
                         return false;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public List<IncomeSummaryRecord> GetIncomeSummaryRecords(int month, int year, long apartmentId)
+        {
+            List<IncomeSummaryRecord> records = new List<IncomeSummaryRecord>();
+            string sqlCommand = "select [ReceiptNo], invoices.[InvoiceNo], [RcpDate], invoices.[ImproveCost], receipts.[GrandTotal] " +
+                                "from receipts inner join invoices on receipts.[InvoiceId] = invoices.[InvoiceId] " +
+                                "where Year(RcpDate) = @Year and Month(RcpDate) = @Month and receipts.ApartmentId = @ApartmentId " +
+                                "order by left(ReceiptNo,4) desc, right(ReceiptNo,4)";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@Year", year);
+                    command.Parameters.AddWithValue("@Month", month);
+                    command.Parameters.AddWithValue("@ApartmentId", apartmentId);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader())
+                    {
+                        foreach (var item in reader)
+                        {
+                            IncomeSummaryRecord r = new IncomeSummaryRecord()
+                            {
+                                ReceiptNo = reader["ReceiptNo"].ToString(),
+                                InvoiceNo = reader["InvoiceNo"].ToString(),
+                                RcpDate = DateTime.Parse(reader["RcpDate"].ToString()).ToString("d MMMM yyyy", new CultureInfo("th-TH")),
+                                ImproveCost = Decimal.Parse(reader["ImproveCost"].ToString()),
+                                GrandTotal = Decimal.Parse(reader["GrandTotal"].ToString())
+                            };
+                            records.Add(r);
+                        }
+                    }
+                    return records;
                 }
                 catch (Exception ex)
                 {

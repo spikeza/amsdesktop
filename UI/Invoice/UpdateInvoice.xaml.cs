@@ -263,7 +263,9 @@ namespace AMSDesktop.UI.Invoice
         {
             if (_invoice != null)
             {
-                ReportPreviewer rp = new ReportPreviewer("InvoiceDataSet", new InvoicesLogic().GetInvoiceForPrinting(_invoice), @".\Reports\Invoice.rdlc");
+                ReportPreviewer rp = new ReportPreviewer();
+                rp.SetDataSet("InvoiceDataSet", new InvoicesLogic().GetInvoiceForPrinting(_invoice));
+                rp.SetReportPath(@".\Reports\Invoice.rdlc");
                 rp.ShowDialog();
             }
         }

@@ -14,5 +14,10 @@ namespace AMSDesktop.BLL
         {
             return new SystemVariablesRepository().GetSystemVariable(apartmentId);
         }
+
+        public void UpdateSystemVariables(SystemVariable vars)
+        {
+            new SystemVariablesRepository().UpdateSystemVariables(vars);
+        }
     }
 }

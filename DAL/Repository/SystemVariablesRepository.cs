@@ -72,5 +72,35 @@ namespace AMSDesktop.DAL.Repository
                 }
             }
         }
+
+        public void UpdateSystemVariables(SystemVariable vars)
+        {
+            string sqlCommand = "update systemVAR set [BuildingName] = @BuildingName, [OwnerAddress] = @OwnerAddress, " +
+                                "[TaxId] = @TaxId, [wUnit] = @WUnit, [EUnit] = @EUnit " +
+                                "where [ApartmentId] = @ApartmentId";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@BuildingName", vars.BuildingName);
+                        command.Parameters.AddWithValue("@OwnerAddress", vars.OwnerAddress);
+                        command.Parameters.AddWithValue("@TaxId", vars.TaxId);
+                        command.Parameters.AddWithValue("@wUnit", vars.WUnit);
+                        command.Parameters.AddWithValue("@EUnit", vars.EUnit);
+                        command.Parameters.AddWithValue("@ApartmentId", vars.ApartmentId);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }

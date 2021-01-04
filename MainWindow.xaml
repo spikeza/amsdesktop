@@ -9,7 +9,6 @@
         Title="ระบบจัดการอพาต์เมนต์" Height="450" Width="800" WindowState="Maximized">
     <DockPanel>
         <Menu DockPanel.Dock="Top" Style="{StaticResource FontStyle}">
-            <MenuItem Name="mSelectApartment" Header="เลือกอพาร์ตเมนต์" Click="mSelectApartment_Click"/>
             <MenuItem Header="จัดการข้อมูล" Background="#FFF0F0F0">
                 <MenuItem Name="mApartmentData" Header="ข้อมูลอพาร์ตเมนต์" Click="mApartmentData_Click"/>
                 <MenuItem Name="mCustomerData" Header="ข้อมูลผู้เช่า" Click="mCustomerData_Click"/>
@@ -18,6 +17,17 @@
             <MenuItem Header="จัดการเอกสาร" Background="#FFF0F0F0">
                 <MenuItem Name="mInvoiceData" Header="ใบแจ้งหนี้" Click="mInvoiceData_Click"/>
                 <MenuItem Name="mReceiptData" Header="ใบเสร็จรับเงิน" Click="mReceiptData_Click"/>
+            </MenuItem>
+            <MenuItem Header="รายงาน" Background="#FFF0F0F0">
+                <MenuItem Name="mInvoiceBatch" Header="พิมพ์ใบแจ้งหนี้ทั้งหมด" Click="mInvoiceBatch_Click"/>
+                <MenuItem Name="mReceiptBatch" Header="พิมพ์ใบเสร็จรับเงินทั้งหมด" Click="mReceiptBatch_Click"/>
+                <Separator/>
+                <MenuItem Name="mIncomeSummaryReport" Header="รายงานสรุปรายรับ" Click="mIncomeSummaryReport_Click"/>
+            </MenuItem>
+            <MenuItem Header="ตั้งค่าระบบ" Background="#FFF0F0F0">
+                <MenuItem Name="mSelectApartment" Header="เลือกอพาร์ตเมนต์" Click="mSelectApartment_Click"/>
+                <Separator/>
+                <MenuItem Name="mSystemVariables" Header="ตั้งค่าเกี่ยวกับอาคารห้องเช่า" Click="mSystemVariables_Click" />
             </MenuItem>
         </Menu>
         <Grid>

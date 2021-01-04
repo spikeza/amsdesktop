@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using GreatFriends.ThaiBahtText;
 using AMSDesktop.BLL;
 using Model = AMSDesktop.DAL.Model;
+using System.Configuration;
 
 namespace AMSDesktop.UI.Receipt
 {
@@ -161,6 +162,16 @@ namespace AMSDesktop.UI.Receipt
             {
                 try
                 {
+                    string utilitiesVATInComment = " ";
+                    string vat = ConfigurationManager.AppSettings["VAT"].ToString();
+                    if (Convert.ToBoolean(ConfigurationManager.AppSettings["ShowUtilitiesVATInComment"].ToString()))
+                    {
+                        Decimal utilityAmount = (_relatedInvoice.WUsedUnit * _relatedInvoice.WUnit) + (_relatedInvoice.EUsedUnit * _relatedInvoice.EUnit);
+                        Decimal divisor = 1 + (Decimal.Parse(vat) / 100);
+                        Decimal utilityAmountBeforeTax = utilityAmount / divisor;
+                        Decimal vatAmount = utilityAmount - utilityAmountBeforeTax;
+                        utilitiesVATInComment = string.Format("มูลค่าเพิ่ม {0}% ค่าน้ำประปา, ค่าไฟฟ้า {1} บาท", vat, vatAmount.ToString("N2"));
+                    }
                     Model.Receipt receipt = new Model.Receipt()
                     {
                         ApartmentId = Global.CurrentApartment.ApartmentId,
@@ -169,7 +180,7 @@ namespace AMSDesktop.UI.Receipt
                         InterestUnit = Convert.ToDecimal(0),
                         AmountDay = 0,
                         RcpDate = DateTime.Now.Date,
-                        Comment = tbxComment.Text == "" ? " " : tbxComment.Text,
+                        Comment = tbxComment.Text == "" ? utilitiesVATInComment : utilitiesVATInComment + System.Environment.NewLine + tbxComment.Text,
                         TotalText = ThaiBahtTextUtil.ThaiBahtText(_totalAmount),
                         GrandTotal = Decimal.ToSingle(_grandTotalAmount),
                         GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(_grandTotalAmount)
@@ -203,9 +214,25 @@ namespace AMSDesktop.UI.Receipt
         {
             if (_activeReceipt != null)
             {
+                string reportPath = @".\Reports\Receipt.rdlc";
+                List<Model.ReceiptForPrinting> receipts = new ReceiptsLogic().GetReceiptForPrinting(_activeReceipt);
+
+                DeductImproveCostComfirmBox confirmBox = new DeductImproveCostComfirmBox();
+                confirmBox.WindowStartupLocation = WindowStartupLocation.Manual;
+                confirmBox.Top = Mouse.GetPosition(null).Y - 200;
+                confirmBox.Left = Mouse.GetPosition(null).X;
+                if (confirmBox.ShowDialog() == false)
+                {
+                    reportPath = @".\Reports\ReceiptDeductImproveCost.rdlc";
+                    foreach (var r in receipts)
+                    {
+                        r.GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(Convert.ToDecimal(r.GrandTotal) - r.ImproveCost);                  
+                    }
+                }
+
                 ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("ReceiptDataSet", new ReceiptsLogic().GetReceiptForPrinting(_activeReceipt));
-                rp.SetReportPath(@".\Reports\Receipt.rdlc");
+                rp.SetDataSet("ReceiptDataSet", receipts);
+                rp.SetReportPath(reportPath);
                 rp.ShowDialog();
             }
         }

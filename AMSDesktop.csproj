@@ -182,6 +182,9 @@
     <Compile Include="UI\Receipt\AddReceipt.xaml.cs">
       <DependentUpon>AddReceipt.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\Receipt\DeductImproveCostComfirmBox.xaml.cs">
+      <DependentUpon>DeductImproveCostComfirmBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Receipt\Receipt.xaml.cs">
       <DependentUpon>Receipt.xaml</DependentUpon>
     </Compile>
@@ -287,6 +290,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Receipt\DeductImproveCostComfirmBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Receipt\Receipt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -365,6 +372,12 @@
     <EmbeddedResource Include="Reports\InvoiceBatch.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReceiptBatch.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ReceiptDeductImproveCost.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\Receipt.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -374,7 +387,7 @@
     <EmbeddedResource Include="Reports\IncomeSummary.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ReceiptBatch.rdlc">
+    <EmbeddedResource Include="Reports\ReceiptBatchDeductImproveCost.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="packages.config" />

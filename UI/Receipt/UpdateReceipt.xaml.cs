@@ -143,9 +143,25 @@ namespace AMSDesktop.UI.Receipt
         {
             if (_receipt != null)
             {
+                string reportPath = @".\Reports\Receipt.rdlc";
+                List<Model.ReceiptForPrinting> receipts = new ReceiptsLogic().GetReceiptForPrinting(_receipt);
+
+                DeductImproveCostComfirmBox confirmBox = new DeductImproveCostComfirmBox();
+                confirmBox.WindowStartupLocation = WindowStartupLocation.Manual;
+                confirmBox.Top = Mouse.GetPosition(null).Y-200;
+                confirmBox.Left = Mouse.GetPosition(null).X;
+                if (confirmBox.ShowDialog() == false)
+                {
+                    reportPath = @".\Reports\ReceiptDeductImproveCost.rdlc";
+                    foreach (var r in receipts)
+                    {
+                        r.GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(Convert.ToDecimal(r.GrandTotal) - r.ImproveCost);
+                    }
+                }
+
                 ReportPreviewer rp = new ReportPreviewer();
                 rp.SetDataSet("ReceiptDataSet", new ReceiptsLogic().GetReceiptForPrinting(_receipt));
-                rp.SetReportPath(@".\Reports\Receipt.rdlc"); 
+                rp.SetReportPath(reportPath); 
                 rp.ShowDialog();
             }
         }

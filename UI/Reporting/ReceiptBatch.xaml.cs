@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using GreatFriends.ThaiBahtText;
 using Model = AMSDesktop.DAL.Model;
 using AMSDesktop.BLL;
 
@@ -55,6 +56,7 @@ namespace AMSDesktop.UI.Reporting
         {
             try
             {
+                bool deductImproveCost = false;
                 int reportMonth = cbbMonth.SelectedIndex + 1;
                 int reportYear = int.Parse(cbbYear.SelectedItem.ToString());
                 DateTime fromDate = new DateTime(reportYear - 543, reportMonth, 1);
@@ -63,13 +65,33 @@ namespace AMSDesktop.UI.Reporting
                 List<Model.Receipt> receipts = new ReceiptsLogic().GetReceipts(fromDate, toDate, Global.CurrentApartment.ApartmentId);
                 List<Model.ReceiptForPrinting> printReceipts = new List<Model.ReceiptForPrinting>();
 
+                string reportPath = @".\Reports\ReceiptBatch.rdlc";
+
+                Receipt.DeductImproveCostComfirmBox confirmBox = new Receipt.DeductImproveCostComfirmBox();
+                confirmBox.WindowStartupLocation = WindowStartupLocation.Manual;
+                confirmBox.Top = Mouse.GetPosition(null).Y;
+                confirmBox.Left = Mouse.GetPosition(null).X;
+                if (confirmBox.ShowDialog() == false)
+                {
+                    reportPath = @".\Reports\ReceiptBatchDeductImproveCost.rdlc";
+                    deductImproveCost = true;
+                }
+
                 foreach (var r in receipts)
                 {
-                    printReceipts.AddRange(new ReceiptsLogic().GetReceiptForPrinting(r));
+                    List<Model.ReceiptForPrinting> printedReceipt = new ReceiptsLogic().GetReceiptForPrinting(r);
+                    if (deductImproveCost)
+                    {
+                        foreach (var pr in printedReceipt)
+                        {
+                            pr.GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(Convert.ToDecimal(pr.GrandTotal) - pr.ImproveCost);
+                        }
+                    }
+                    printReceipts.AddRange(printedReceipt);
                 }
                 ReportPreviewer rp = new ReportPreviewer();
                 rp.SetDataSet("ReceiptDataSet", printReceipts);
-                rp.SetReportPath(@".\Reports\ReceiptBatch.rdlc");
+                rp.SetReportPath(reportPath);
                 rp.ShowDialog();
             }
             catch (Exception ex)

@@ -1,0 +1,23 @@
+﻿<Window x:Class="AMSDesktop.UI.Receipt.DeductImproveCostComfirmBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AMSDesktop.UI.Receipt"
+        mc:Ignorable="d"
+        Style="{StaticResource FontStyle}"
+        Title="ยืนยันการพิมพ์ใบเสร็จรับเงิน" Height="200" Width="300">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <WrapPanel Margin="0, 30, 0, 10" HorizontalAlignment="Center">
+                <Label Content="คุณต้องการพิมพ์ใบเสร็จรับเงินแบบไหน?"/>
+            </WrapPanel>
+            <WrapPanel Margin="0, 0, 0, 10" HorizontalAlignment="Center">
+                <Button x:Name="btnNoDeduct" Content="แบบปกติ" Width="150" Height="30" Click="btnNoDeduct_Click"/>
+            </WrapPanel>
+            <WrapPanel Margin="0, 0, 0, 10" HorizontalAlignment="Center">
+                <Button x:Name="btnDeduct" Content="แบบหักค่าใช้จ่ายอื่น ๆ" Height="30" Width="150" Click="btnDeduct_Click"/>
+            </WrapPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>

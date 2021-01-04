@@ -29,7 +29,7 @@
                     <DataGridTextColumn Header="เดือน" Binding="{Binding MonthNo}"/>
                     <DataGridTextColumn Header="ปี" Binding="{Binding RcpDate.Year}"/>
                     <DataGridTextColumn Header="เลขที่ใบแจ้งหนี้" Binding="{Binding InvoiceNo}"/>
-                    <DataGridTextColumn Header="จำนวนเงินรวม" Binding="{Binding GrandTotal}"/>
+                    <DataGridTextColumn Header="จำนวนเงินรวม" Binding="{Binding GrandTotal, ConverterCulture='th-TH' ,StringFormat=c}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <WrapPanel HorizontalAlignment="Center">

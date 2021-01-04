@@ -139,7 +139,7 @@
                 <Button x:Name="btnAdd" Content="เพิ่มข้อมูล" Margin="100, 0, 10, 0" Width="100" Height="30" Click="btnAdd_Click"/>
                 <Button x:Name="btnClear" Content="ล้างข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnClear_Click"/>
                 <Button x:Name="btnCancel" Content="ยกเลิก" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnCancel_Click"/>
-                <Button x:Name="btnPrint" Content="พิพม์ใบแจ้งหนี้" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnPrint_Click"/>
+                <Button x:Name="btnPrint" Content="พิมพ์ใบแจ้งหนี้" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnPrint_Click"/>
             </WrapPanel>
         </StackPanel>
     </DockPanel>

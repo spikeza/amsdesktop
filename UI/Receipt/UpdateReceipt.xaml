@@ -138,7 +138,7 @@
             <WrapPanel Margin="0 10, 0, 0">
                 <Button x:Name="btnUpdate" Content="แก้ไขข้อมูล" Margin="150, 0, 10, 0" Width="100" Height="30" Click="btnUpdate_Click"/>
                 <Button x:Name="btnCancel" Content="ยกเลิก" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnCancel_Click"/>
-                <Button x:Name="btnPrint" Content="พิพม์ใบเสร็จรับเงิน" Margin="10, 0, 10, 0" Width="120" Height="30" Click="btnPrint_Click"/>
+                <Button x:Name="btnPrint" Content="พิมพ์ใบเสร็จรับเงิน" Margin="10, 0, 10, 0" Width="120" Height="30" Click="btnPrint_Click"/>
             </WrapPanel>
         </StackPanel>
     </DockPanel>

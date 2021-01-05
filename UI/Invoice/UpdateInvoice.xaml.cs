@@ -246,8 +246,8 @@ namespace AMSDesktop.UI.Invoice
                     new InvoicesLogic().UpdateInvoice(_invoice);
                     MessageBox.Show("การแก้ไขข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    _invoice.Room.WUnitStart = _waterStart;
-                    _invoice.Room.EUnitStart = _electricStart;
+                    _invoice.Room.WUnitStart = _waterStart + _waterUnit;
+                    _invoice.Room.EUnitStart = _electricStart + _electricUnit;
                     new RoomsLogic().UpdateRoomMeterStart(_invoice.Room);
 
                     EnablePrinting(true);

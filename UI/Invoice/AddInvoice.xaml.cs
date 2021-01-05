@@ -92,8 +92,8 @@ namespace AMSDesktop.UI.Invoice
         {
             Model.Invoice latestInvoive = new InvoicesLogic().GetLatestInvoice(_selectedRoom.RoomId);
             lblContactName.Content = _selectedRoom.Customer.ContactName;
-            tbxWaterStart.Text = latestInvoive != null ? (latestInvoive.WMeterStart + latestInvoive.WUsedUnit).ToString() : "0";
-            tbxElectricStart.Text = latestInvoive != null ? (latestInvoive.EMeterStart + latestInvoive.EUsedUnit).ToString() : "0";
+            tbxWaterStart.Text = latestInvoive != null ? (latestInvoive.WMeterStart + latestInvoive.WUsedUnit).ToString() : _selectedRoom.WUnitStart.ToString();
+            tbxElectricStart.Text = latestInvoive != null ? (latestInvoive.EMeterStart + latestInvoive.EUsedUnit).ToString() : _selectedRoom.EUnitStart.ToString();
             tbxWaterUnitPrices.Text = Global.CurrentSystemVariable.WUnit.ToString("N2", thCulture);
             tbxElectricUnitPrices.Text = Global.CurrentSystemVariable.EUnit.ToString("N2", thCulture);
             tbxMonthCost.Text = _selectedRoom.MonthCost.ToString("N2", thCulture);
@@ -131,8 +131,8 @@ namespace AMSDesktop.UI.Invoice
                     new InvoicesLogic().AddInvoice(invoice);
                     _activeInvoice = invoice;
 
-                    _selectedRoom.WUnitStart = _waterStart;
-                    _selectedRoom.EUnitStart = _electricStart;
+                    _selectedRoom.WUnitStart = _waterStart + _waterUnit;
+                    _selectedRoom.EUnitStart = _electricStart + _electricUnit;
                     new RoomsLogic().UpdateRoomMeterStart(_selectedRoom);
 
                     MessageBox.Show("การเพิ่มข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);

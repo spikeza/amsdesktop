@@ -494,5 +494,30 @@ namespace AMSDesktop.DAL.Repository
                 }
             }
         }
+
+        public void SetInvoicePaidStatus(Invoice invoice)
+        {
+            string sqlCommand = "update invoices set [Paid] = @Paid " +
+                                "where [InvoiceId] = @InvoiceId";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(sqlCommand, con))
+                {
+                    try
+                    {
+                        command.Parameters.AddWithValue("@Paid", invoice.Paid);
+                        command.Parameters.AddWithValue("@InvoiceId", invoice.InvoiceId);
+
+                        con.Open();
+
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }

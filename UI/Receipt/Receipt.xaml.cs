@@ -97,6 +97,8 @@ namespace AMSDesktop.UI.Receipt
                     {
                         ReceiptsLogic l = new ReceiptsLogic();
                         l.DeleteReceipt(selectedReceipt);
+                        selectedReceipt.Invoice.Paid = false;
+                        new InvoicesLogic().SetInvoicePaidStatus(selectedReceipt.Invoice);
                         SearchReceipt();
                     }
                 }

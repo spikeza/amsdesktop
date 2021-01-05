@@ -100,5 +100,10 @@ namespace AMSDesktop.BLL
         {
             return new InvoicesRepository().IsThisMonthInvoiceExists(roomId, month, year);
         }
+
+        public void SetInvoicePaidStatus(Invoice invoice)
+        {
+            new InvoicesRepository().SetInvoicePaidStatus(invoice);
+        }
     }
 }

@@ -188,6 +188,8 @@ namespace AMSDesktop.UI.Receipt
 
                     new ReceiptsLogic().AddReceipt(receipt);
                     _activeReceipt = receipt;
+                    _activeReceipt.Invoice.Paid = true;
+                    new InvoicesLogic().SetInvoicePaidStatus(_relatedInvoice);
 
                     MessageBox.Show("การเพิ่มข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);
 

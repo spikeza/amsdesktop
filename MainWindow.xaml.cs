@@ -104,5 +104,11 @@ namespace AMSDesktop
             UI.User.User userWindow = new UI.User.User();
             userWindow.ShowDialog();
         }
+
+        private void mIncomeReport_Click(object sender, RoutedEventArgs e)
+        {
+            UI.Reporting.IncomeReport reportWindow = new UI.Reporting.IncomeReport();
+            reportWindow.ShowDialog();
+        }
     }
 }

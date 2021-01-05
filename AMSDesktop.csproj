@@ -128,6 +128,7 @@
     <Compile Include="BLL\UsersLogic.cs" />
     <Compile Include="DAL\Model\Apartment.cs" />
     <Compile Include="DAL\Model\Customer.cs" />
+    <Compile Include="DAL\Model\IncomeReportRecord.cs" />
     <Compile Include="DAL\Model\IncomeSummaryRecord.cs" />
     <Compile Include="DAL\Model\Invoice.cs" />
     <Compile Include="DAL\Model\InvoiceDataGridView.cs" />
@@ -190,6 +191,9 @@
     </Compile>
     <Compile Include="UI\Receipt\UpdateReceipt.xaml.cs">
       <DependentUpon>UpdateReceipt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Reporting\IncomeReport.xaml.cs">
+      <DependentUpon>IncomeReport.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Reporting\IncomeSummaryReport.xaml.cs">
       <DependentUpon>IncomeSummaryReport.xaml</DependentUpon>
@@ -302,6 +306,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Reporting\IncomeReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Reporting\IncomeSummaryReport.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -390,7 +398,11 @@
     <EmbeddedResource Include="Reports\ReceiptBatchDeductImproveCost.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\IncomeReport.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\AMSDesktop.DAL.Model.IncomeReportRecord.datasource" />
     <None Include="Properties\DataSources\AMSDesktop.DAL.Model.IncomeSummaryRecord.datasource" />
     <None Include="Properties\DataSources\AMSDesktop.DAL.Model.InvoiceForPrinting.datasource" />
     <None Include="Properties\DataSources\AMSDesktop.DAL.Model.ReceiptForPrinting.datasource" />

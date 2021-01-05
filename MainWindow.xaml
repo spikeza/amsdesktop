@@ -22,7 +22,8 @@
                 <MenuItem Name="mInvoiceBatch" Header="พิมพ์ใบแจ้งหนี้ทั้งหมด" Click="mInvoiceBatch_Click"/>
                 <MenuItem Name="mReceiptBatch" Header="พิมพ์ใบเสร็จรับเงินทั้งหมด" Click="mReceiptBatch_Click"/>
                 <Separator/>
-                <MenuItem Name="mIncomeSummaryReport" Header="รายงานสรุปรายรับ" Click="mIncomeSummaryReport_Click"/>
+                <MenuItem Name="mIncomeReport" Header="รายงานรายได้รวม" Click="mIncomeReport_Click"/>
+                <MenuItem Name="mIncomeSummaryReport" Header="รางงานสรุปรายรับ" Click="mIncomeSummaryReport_Click"/>
             </MenuItem>
             <MenuItem Header="ตั้งค่าระบบ" Background="#FFF0F0F0">
                 <MenuItem Name="mSelectApartment" Header="เลือกอพาร์ตเมนต์" Click="mSelectApartment_Click"/>

@@ -37,9 +37,9 @@ namespace AMSDesktop.UI.Customer
                     //Other information is set as default value
                     CustomerNo = " ",
                     CompanyName = Global.CurrentApartment.CompanyName,
-                    CardId = Global.CurrentApartment.TaxId,
+                    CardId = "_-____-_____-__-_",
                     Address = Global.CurrentApartment.Address,
-                    Tel = Global.CurrentApartment.Tel
+                    Tel = " "
                 };
                 new CustomersLogic().AddCustomer(customer);
                 MessageBox.Show("การเพิ่มข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);

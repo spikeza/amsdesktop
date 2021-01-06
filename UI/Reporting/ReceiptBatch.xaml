@@ -18,7 +18,7 @@
                 <ComboBox Name="cbbYear" Width="150"/>
             </WrapPanel>
             <WrapPanel Margin="20, 20, 0, 0">
-                <Button x:Name="btnPrint" Content="พิมพ์ใบแจ้งหนี้" Width="100" Height="30" Margin="10, 10, 10, 10" Click="btnPrint_Click"/>
+                <Button x:Name="btnPrint" Content="พิมพ์ใบเสร็จ" Width="100" Height="30" Margin="10, 10, 10, 10" Click="btnPrint_Click"/>
                 <Button x:Name="btnClose" Content="ปิด" Width="100" Height="30" Margin="10, 10, 10, 10" Click="btnClose_Click" />
             </WrapPanel>
         </StackPanel>

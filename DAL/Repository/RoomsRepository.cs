@@ -200,7 +200,7 @@ namespace AMSDesktop.DAL.Repository
                         command.Parameters.AddWithValue("@EUnitStart", room.EUnitStart);
                         command.Parameters.AddWithValue("@MonthCost", room.MonthCost);
                         command.Parameters.AddWithValue("@InsureCost", room.InsureCost);
-                        command.Parameters.AddWithValue("@StartDate", room.StartDate);
+                        command.Parameters.Add("@StartDate", OleDbType.Date).Value = room.StartDate;
                         command.Parameters.AddWithValue("@ApartmentId", room.ApartmentId);
                         command.Parameters.AddWithValue("@Floor", room.Floor);
                         command.Parameters.AddWithValue("@Picture", room.Picture);
@@ -239,7 +239,7 @@ namespace AMSDesktop.DAL.Repository
                         command.Parameters.AddWithValue("@EUnitStart", room.EUnitStart);
                         command.Parameters.AddWithValue("@MonthCost", room.MonthCost);
                         command.Parameters.AddWithValue("@InsureCost", room.InsureCost);
-                        command.Parameters.AddWithValue("@StartDate", room.StartDate);
+                        command.Parameters.Add("@StartDate", OleDbType.Date).Value = room.StartDate;
                         command.Parameters.AddWithValue("@ApartmentId", room.ApartmentId);
                         command.Parameters.AddWithValue("@Floor", room.Floor);
                         command.Parameters.AddWithValue("@Picture", room.Picture);

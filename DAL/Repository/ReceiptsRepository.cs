@@ -30,8 +30,8 @@ namespace AMSDesktop.DAL.Repository
                 OleDbCommand command = new OleDbCommand(sqlCommand, con);
                 try
                 {
-                    command.Parameters.AddWithValue("@fromDate", fromDate);
-                    command.Parameters.AddWithValue("@toDate", toDate);
+                    command.Parameters.Add("@fromDate", OleDbType.Date).Value = fromDate;
+                    command.Parameters.Add("@toDate", OleDbType.Date).Value = toDate;
                     command.Parameters.AddWithValue("@apartmentId", apartmentId);
                     con.Open();
                     using (OleDbDataReader reader = command.ExecuteReader())
@@ -77,8 +77,8 @@ namespace AMSDesktop.DAL.Repository
                 OleDbCommand command = new OleDbCommand(sqlCommand, con);
                 try
                 {
-                    command.Parameters.AddWithValue("@fromDate", fromDate);
-                    command.Parameters.AddWithValue("@toDate", toDate);
+                    command.Parameters.Add("@fromDate", OleDbType.Date).Value = fromDate;
+                    command.Parameters.Add("@toDate", OleDbType.Date).Value = toDate;
                     command.Parameters.AddWithValue("@apartmentId", apartmentId);
                     con.Open();
                     using (OleDbDataReader reader = command.ExecuteReader())
@@ -172,8 +172,8 @@ namespace AMSDesktop.DAL.Repository
                 try
                 {
                     command.Parameters.AddWithValue("@SearchValue", "%" + searchValue + "%");
-                    command.Parameters.AddWithValue("@fromDate", fromDate);
-                    command.Parameters.AddWithValue("@toDate", toDate);
+                    command.Parameters.Add("@fromDate", OleDbType.Date).Value = fromDate;
+                    command.Parameters.Add("@toDate", OleDbType.Date).Value = toDate;
                     command.Parameters.AddWithValue("@apartmentId", apartmentId);
                     con.Open();
                     using (OleDbDataReader reader = command.ExecuteReader())
@@ -260,7 +260,7 @@ namespace AMSDesktop.DAL.Repository
                         command.Parameters.AddWithValue("@ReceiptNo", receipt.ReceiptNo);
                         command.Parameters.AddWithValue("@InterestUnit", receipt.InterestUnit);
                         command.Parameters.AddWithValue("@AmountDay", receipt.AmountDay);
-                        command.Parameters.AddWithValue("@RcpDate", receipt.RcpDate);
+                        command.Parameters.Add("@RcpDate", OleDbType.Date).Value = receipt.RcpDate;
                         command.Parameters.AddWithValue("@Comment", receipt.Comment);
                         command.Parameters.AddWithValue("@TotalText", receipt.TotalText);
                         command.Parameters.AddWithValue("@GrandTotal", receipt.GrandTotal);

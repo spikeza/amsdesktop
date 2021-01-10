@@ -50,7 +50,6 @@ namespace AMSDesktop.UI.Receipt
         {
             InitializeComponent();
             PopulateFieldsOnLoad();
-            EnablePrinting(false);
         }
 
         private void PopulateFieldsOnLoad()
@@ -58,24 +57,11 @@ namespace AMSDesktop.UI.Receipt
             tbkApartmentName.Text = Global.CurrentApartment.ApartmentName;
             tbkApartmentAddress.Text = Global.CurrentApartment.Address;
             tbxReceiptNo.Text = new ReceiptsLogic().GetNewReceiptNumber(Global.CurrentApartment.ApartmentId);
-            PopulateRoomNoDropDown();
             tbxMonth.Text = DateTime.Now.Month.ToString();
             lblInvoiceDate.Content = DateTime.Now.ToString("d MMMM yyyy", thCulture);
             tbxTelephoneAmount.Text = "0.00";
             tbxImproveCost.Text = "0.00";
-        }
-
-        private void PopulateRoomNoDropDown()
-        {
-            List<Model.RoomDropDownView> rooms = new RoomsLogic().GetRoomsForDropDownList(Global.CurrentApartment.ApartmentId);
-            cbbRoomNo.ItemsSource = rooms;
-            cbbRoomNo.DisplayMemberPath = "RoomNo";
-            cbbRoomNo.SelectedValuePath = "RoomId";
-        }
-
-        private void cbbRoomNo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            PopulateReceiptData();
+            tbxRoomNo.Focus();
         }
 
         private void PopulateFieldsOnRoomSelect()
@@ -91,7 +77,7 @@ namespace AMSDesktop.UI.Receipt
                 tbkApartmentName.Text = Global.CurrentApartment.ApartmentName;
                 tbkApartmentAddress.Text = Global.CurrentApartment.Address;
                 tbxReceiptNo.Text = _relatedInvoice.InvoiceNo;
-                cbbRoomNo.SelectedValue = _relatedInvoice.Room.RoomId;
+                tbxRoomNo.Text = _relatedInvoice.Room.RoomNo;
                 tbxMonth.Text = _relatedInvoice.MonthNo.ToString();
                 tbxWaterStart.Text = _relatedInvoice.WMeterStart.ToString();
                 tbxElectricStart.Text = _relatedInvoice.EMeterStart.ToString();
@@ -158,6 +144,11 @@ namespace AMSDesktop.UI.Receipt
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            AddReceiptData();
+        }
+
+        private void AddReceiptData()
+        {
             if (IsFormInputValid())
             {
                 try
@@ -192,8 +183,7 @@ namespace AMSDesktop.UI.Receipt
                     new InvoicesLogic().SetInvoicePaidStatus(_relatedInvoice);
 
                     MessageBox.Show("การเพิ่มข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    EnablePrinting(true);
+                    ClearForm();
                 }
                 catch (Exception ex)
                 {
@@ -210,33 +200,6 @@ namespace AMSDesktop.UI.Receipt
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
-        }
-
-        private void btnPrint_Click(object sender, RoutedEventArgs e)
-        {
-            if (_activeReceipt != null)
-            {
-                string reportPath = @".\Reports\Receipt.rdlc";
-                List<Model.ReceiptForPrinting> receipts = new ReceiptsLogic().GetReceiptForPrinting(_activeReceipt);
-
-                DeductImproveCostComfirmBox confirmBox = new DeductImproveCostComfirmBox();
-                confirmBox.WindowStartupLocation = WindowStartupLocation.Manual;
-                confirmBox.Top = Mouse.GetPosition(null).Y - 200;
-                confirmBox.Left = Mouse.GetPosition(null).X;
-                if (confirmBox.ShowDialog() == false)
-                {
-                    reportPath = @".\Reports\ReceiptDeductImproveCost.rdlc";
-                    foreach (var r in receipts)
-                    {
-                        r.GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(Convert.ToDecimal(r.GrandTotal) - r.ImproveCost);                  
-                    }
-                }
-
-                ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("ReceiptDataSet", receipts);
-                rp.SetReportPath(reportPath);
-                rp.ShowDialog();
-            }
         }
 
         private void SetInputTextBoxesRed(bool isRed)
@@ -278,6 +241,7 @@ namespace AMSDesktop.UI.Receipt
             if (e.Key == Key.Enter)
             {
                 PopulateReceiptData();
+                tbxComment.Focus();
             }
         }
 
@@ -285,7 +249,7 @@ namespace AMSDesktop.UI.Receipt
         {
             _selectedRoom = null;
             _selectedMonth = 0;
-            cbbRoomNo.SelectedItem = null;
+            tbxRoomNo.Text = "";
             tbxMonth.Text = "";
             tbxWaterStart.Text = "";
             tbxWaterEnd.Text = "";
@@ -315,7 +279,7 @@ namespace AMSDesktop.UI.Receipt
 
             if (tbxReceiptNo.Text == "")
                 errorList.AppendLine("เลขที่ใบแจ้งหนี้/Invoice No");
-            if (cbbRoomNo.SelectedItem == null)
+            if (tbxRoomNo.Text == "")
                 errorList.AppendLine("เลขที่ห้องพัก/Room No");
             if (tbxMonth.Text == "")
                 errorList.AppendLine("ประจำเดือน/Month");
@@ -339,35 +303,13 @@ namespace AMSDesktop.UI.Receipt
             return true;
         }
 
-        private void EnablePrinting(bool isEnable)
-        {
-            if (isEnable)
-            {
-                cbbRoomNo.IsEnabled = false;
-                tbxMonth.IsReadOnly = true;
-                tbxComment.IsReadOnly = true;
-                btnAdd.IsEnabled = false;
-                btnClear.IsEnabled = false;
-                btnPrint.IsEnabled = true;
-            }
-            else
-            {
-                cbbRoomNo.IsEnabled = true;
-                tbxMonth.IsReadOnly = false;
-                tbxComment.IsReadOnly = false;
-                btnAdd.IsEnabled = true;
-                btnClear.IsEnabled = true;
-                btnPrint.IsEnabled = false;
-            }
-        }
-
         private void PopulateReceiptData()
         {
             if (IsMonthInputValid())
             {
-                if (cbbRoomNo.SelectedValue != null)
+                if (tbxRoomNo.Text != null)
                 {
-                    _selectedRoom = new RoomsLogic().GetRoom((long)cbbRoomNo.SelectedValue);
+                    _selectedRoom = new RoomsLogic().GetRoomByRoomNo(tbxRoomNo.Text);
                     int receiptYear = (DateTime.Now.Month == 1 && _selectedMonth == 12) ? DateTime.Now.Year - 1 : DateTime.Now.Year;
                     if (!new ReceiptsLogic().IsThisMonthReceiptExists(_selectedRoom.RoomId, long.Parse(tbxMonth.Text), receiptYear))
                     {
@@ -379,6 +321,32 @@ namespace AMSDesktop.UI.Receipt
                         MessageBox.Show("มีข้อมูลใบเสร็จรับเงินของเดือนนี้ในระบบแล้ว", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
+            }
+        }
+
+        private void tbxRoomNo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbxRoomNo.Text != "")
+            {
+                _selectedRoom = new RoomsLogic().GetRoomByRoomNo(tbxRoomNo.Text);
+                if (_selectedRoom != null)
+                {
+                    PopulateReceiptData();
+                    tbxComment.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("ไม่พบเลขที่ห้องพักที่กำหนด", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ClearForm();
+                }
+            }
+        }
+
+        private void tbxComment_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                AddReceiptData();
             }
         }
     }

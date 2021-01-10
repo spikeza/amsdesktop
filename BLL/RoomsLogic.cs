@@ -29,6 +29,12 @@ namespace AMSDesktop.BLL
         {
             return new RoomsRepository().GetRoom(roomId);
         }
+
+        public Room GetRoomByRoomNo(string roomNo)
+        {
+            return new RoomsRepository().GetRoomByRoomNo(roomNo);
+        }
+
         public void AddRoom(Room room)
         {
             new RoomsRepository().AddRoom(room);

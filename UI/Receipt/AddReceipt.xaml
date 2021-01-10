@@ -28,11 +28,11 @@
                         </WrapPanel>
                         <WrapPanel>
                             <Label Content="เลขที่ห้องพัก/Room No" Width="160" />
-                            <ComboBox Name="cbbRoomNo" Width="120" SelectionChanged="cbbRoomNo_SelectionChanged" TabIndex="1" />
+                            <TextBox x:Name="tbxRoomNo" Width="120" KeyDown="tbxRoomNo_KeyDown" TabIndex="1"/>
                         </WrapPanel>
                         <WrapPanel>
                             <Label Content="ประจำเดือน/Month" Width="160" />
-                            <TextBox x:Name="tbxMonth" Width="120" PreviewTextInput="NumberValidationTextBox" TabIndex="2" KeyDown="tbxMonth_KeyDown" />
+                            <TextBox x:Name="tbxMonth" Width="120" PreviewTextInput="NumberValidationTextBox" KeyDown="tbxMonth_KeyDown" />
                         </WrapPanel>
                     </StackPanel>
                 </Grid>
@@ -133,13 +133,12 @@
             <Separator  Height="10" Width="1920" Margin="10, 10, 10, 0"/>
             <WrapPanel Margin="20,0,0,0" HorizontalAlignment="Left">
                 <Label Content="หมายเหตุ" Foreground="Red"/>
-                <TextBox x:Name="tbxComment" Width="450" Height="100" AcceptsReturn="True" TabIndex="3"/>
+                <TextBox x:Name="tbxComment" Width="450" Height="100" KeyDown="tbxComment_KeyDown" TabIndex="2" />
             </WrapPanel>
             <WrapPanel Margin="0 10, 0, 0">
                 <Button x:Name="btnAdd" Content="เพิ่มข้อมูล" Margin="100, 0, 10, 0" Width="100" Height="30" Click="btnAdd_Click"/>
                 <Button x:Name="btnClear" Content="ล้างข้อมูล" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnClear_Click"/>
                 <Button x:Name="btnCancel" Content="ยกเลิก" Margin="10, 0, 10, 0" Width="100" Height="30" Click="btnCancel_Click"/>
-                <Button x:Name="btnPrint" Content="พิมพ์ใบเสร็จรับเงิน" Margin="10, 0, 10, 0" Width="120" Height="30" Click="btnPrint_Click"/>
             </WrapPanel>
         </StackPanel>
     </DockPanel>

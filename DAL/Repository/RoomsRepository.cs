@@ -184,6 +184,52 @@ namespace AMSDesktop.DAL.Repository
             }
         }
 
+        public Room GetRoomByRoomNo(string roomNo)
+        {
+            Room room;
+            string sqlCommand = @"select * from rooms where roomNo = @RoomNo";
+            using (OleDbConnection con = new OleDbConnection(connectionString))
+            {
+                OleDbCommand command = new OleDbCommand(sqlCommand, con);
+                try
+                {
+                    command.Parameters.AddWithValue("@RoomNo", roomNo);
+                    con.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                    {
+                        if (reader.Read())
+                        {
+                            room = new Room()
+                            {
+                                RoomId = long.Parse(reader["RoomId"].ToString()),
+                                RoomNo = reader["RoomNo"].ToString(),
+                                Customer = new CustomersRepository().GetCustomer(long.Parse(reader["CustomerId"].ToString())),
+                                WUnitStart = long.Parse(reader["WUnitStart"].ToString()),
+                                EUnitStart = long.Parse(reader["EUnitStart"].ToString()),
+                                MonthCost = Decimal.Parse(reader["MonthCost"].ToString()),
+                                InsureCost = Decimal.Parse(reader["InsureCost"].ToString()),
+                                StartDate = reader["StartDate"].ToString() != "" ? DateTime.Parse(reader["StartDate"].ToString()) : (DateTime?)null,
+                                ApartmentId = long.Parse(reader["ApartMentId"].ToString()),
+                                Floor = reader["Floor"].ToString(),
+                                Picture = reader["Picture"].ToString(),
+                                ContractMonth = long.Parse(reader["ContractMonth"].ToString()),
+                                LandTaxedPerson = bool.Parse(reader["LandTaxedPerson"].ToString()),
+                                Available = bool.Parse(reader["Available"].ToString())
+                            };
+
+                            return room;
+                        }
+
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
         public void AddRoom(Room room)
         {
             string sqlCommand = "insert into rooms ([RoomNo], [CustomerId], [WUnitStart], [EUnitStart], [MonthCost], [InsureCost], [StartDate], [ApartmentId], [Floor], [Picture], [ContractMonth], [LandTaxedPerson], [Available]) " +

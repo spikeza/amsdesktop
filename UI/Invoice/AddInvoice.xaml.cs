@@ -48,7 +48,6 @@ namespace AMSDesktop.UI.Invoice
         {
             InitializeComponent();
             PopulateFieldsOnLoad();
-            EnablePrinting(false);
         }
 
         private void PopulateFieldsOnLoad()
@@ -56,36 +55,11 @@ namespace AMSDesktop.UI.Invoice
             tbkApartmentName.Text = Global.CurrentApartment.ApartmentName;
             tbkApartmentAddress.Text = Global.CurrentApartment.Address;
             tbxInvoiceNo.Text = new InvoicesLogic().GetNewInvoiceNumber(Global.CurrentApartment.ApartmentId);
-            PopulateRoomNoDropDown();
             tbxMonth.Text = DateTime.Now.Month.ToString();
             lblInvoiceDate.Content = DateTime.Now.ToString("d MMMM yyyy", thCulture);
             tbxTelephoneAmount.Text = "0.00";
             tbxImproveCost.Text = "0.00";
-        }
-
-        private void PopulateRoomNoDropDown()
-        {
-            List<Model.RoomDropDownView> rooms = new RoomsLogic().GetRoomsForDropDownList(Global.CurrentApartment.ApartmentId);
-            cbbRoomNo.ItemsSource = rooms;
-            cbbRoomNo.DisplayMemberPath = "RoomNo";
-            cbbRoomNo.SelectedValuePath = "RoomId";
-        }
-
-        private void cbbRoomNo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cbbRoomNo.SelectedValue != null)
-            {
-                _selectedRoom = new RoomsLogic().GetRoom((long)cbbRoomNo.SelectedValue);
-                if (!new InvoicesLogic().IsThisMonthInvoiceExists(_selectedRoom.RoomId, long.Parse(tbxMonth.Text), DateTime.Now.Year))
-                {
-                    PopulateFieldsOnRoomSelect();
-                }
-                else
-                {
-                    ClearForm();
-                    MessageBox.Show("มีข้อมูลใบแจ้งหนี้ของเดือนนี้ในระบบแล้ว", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
+            tbxRoomNo.Focus();
         }
 
         private void PopulateFieldsOnRoomSelect()
@@ -100,6 +74,11 @@ namespace AMSDesktop.UI.Invoice
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            AddInvoiceData();
+        }
+
+        private void AddInvoiceData()
         {
             if (IsFormInputValid())
             {
@@ -137,7 +116,7 @@ namespace AMSDesktop.UI.Invoice
 
                     MessageBox.Show("การเพิ่มข้อมูลสำเร็จเรียบร้อย", "สำเร็จ", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    EnablePrinting(true);
+                    ClearForm();
                 }
                 catch (Exception ex)
                 {
@@ -154,17 +133,6 @@ namespace AMSDesktop.UI.Invoice
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
-        }
-
-        private void btnPrint_Click(object sender, RoutedEventArgs e)
-        {
-            if(_activeInvoice != null)
-            {
-                ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("InvoiceDataSet", new InvoicesLogic().GetInvoiceForPrinting(_activeInvoice));
-                rp.SetReportPath(@".\Reports\Invoice.rdlc");
-                rp.ShowDialog();
-            }
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -283,7 +251,7 @@ namespace AMSDesktop.UI.Invoice
             _vatAmount = 0;
             _grandTotalAmount = 0;
             tbxInvoiceNo.Text = "";
-            cbbRoomNo.SelectedItem = null;
+            tbxRoomNo.Text = "";
             tbxMonth.Text = "";
             tbxWaterStart.Text = "";
             tbxWaterEnd.Text = "";
@@ -313,7 +281,7 @@ namespace AMSDesktop.UI.Invoice
 
             if (tbxInvoiceNo.Text == "")
                 errorList.AppendLine("เลขที่ใบแจ้งหนี้/Invoice No");
-            if (cbbRoomNo.SelectedItem == null)
+            if (tbxRoomNo.Text == "")
                 errorList.AppendLine("เลขที่ห้องพัก/Room No");
             if (tbxMonth.Text == "")
                 errorList.AppendLine("ประจำเดือน/Month");
@@ -344,40 +312,6 @@ namespace AMSDesktop.UI.Invoice
 
         }
 
-        private void EnablePrinting(bool isEnable)
-        {
-            if (isEnable)
-            {
-                tbxInvoiceNo.IsReadOnly = true;
-                cbbRoomNo.IsEnabled = false;
-                tbxMonth.IsReadOnly = true;
-                tbxWaterEnd.IsReadOnly = true;
-                tbxElectricEnd.IsReadOnly = true;
-                tbxTelephoneAmount.IsReadOnly = true;
-                tbxImproveCost.IsReadOnly = true;
-                tbxImproveText.IsReadOnly = true;
-                tbxComment.IsReadOnly = true;
-                btnAdd.IsEnabled = false;
-                btnClear.IsEnabled = false;
-                btnPrint.IsEnabled = true;
-            }
-            else
-            {
-                tbxInvoiceNo.IsReadOnly = false;
-                cbbRoomNo.IsEnabled = true;
-                tbxMonth.IsReadOnly = false;
-                tbxWaterEnd.IsReadOnly = false;
-                tbxElectricEnd.IsReadOnly = false;
-                tbxTelephoneAmount.IsReadOnly = false;
-                tbxImproveCost.IsReadOnly = false;
-                tbxImproveText.IsReadOnly = false;
-                tbxComment.IsReadOnly = false;
-                btnAdd.IsEnabled = true;
-                btnClear.IsEnabled = true;
-                btnPrint.IsEnabled = false;
-            }
-        }
-
         private void SetInputTextBoxesRed(bool isRed)
         {
             if (isRed)
@@ -389,6 +323,93 @@ namespace AMSDesktop.UI.Invoice
             {
                 tbxTelephoneAmount.ClearValue(Border.BorderBrushProperty);
                 tbxImproveCost.ClearValue(Border.BorderBrushProperty);
+            }
+        }
+
+        private void tbxRoomNo_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == Key.Enter && tbxRoomNo.Text != "")
+                {
+                    _selectedRoom = new RoomsLogic().GetRoomByRoomNo(tbxRoomNo.Text);
+                    if (_selectedRoom != null)
+                    {
+                        if (!new InvoicesLogic().IsThisMonthInvoiceExists(_selectedRoom.RoomId, long.Parse(tbxMonth.Text), DateTime.Now.Year))
+                        {
+                            PopulateFieldsOnRoomSelect();
+                            tbxWaterEnd.Focus();
+                        }
+                        else
+                        {
+                            MessageBox.Show("มีข้อมูลใบแจ้งหนี้ของเดือนนี้ในระบบแล้ว", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                            ClearForm();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("ไม่พบเลขที่ห้องพักที่กำหนด", "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+                        ClearForm();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "เกิดข้อผิดพลาด", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+        }
+
+        private void tbxWaterEnd_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbxWaterEnd.Text != "")
+            {
+                CalculateAllAmounts();
+                tbxElectricEnd.Focus();
+            }
+        }
+
+        private void tbxElectricEnd_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbxElectricEnd.Text != "")
+            {
+                CalculateAllAmounts();
+                tbxTelephoneAmount.Focus();
+            }
+        }
+
+        private void tbxTelephoneAmount_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbxTelephoneAmount.Text != "")
+            {
+                CalculateAllAmounts();
+                tbxImproveCost.Focus();
+            }
+        }
+
+        private void tbxImproveCost_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbxImproveCost.Text != "")
+            {
+                CalculateAllAmounts();
+                tbxComment.Focus();
+            }
+        }
+
+        private void tbxComment_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                CalculateAllAmounts();
+                AddInvoiceData();
+            }
+        }
+
+        private void tbxMonth_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && tbxMonth.Text != "")
+            {
+                tbxRoomNo.Focus();
             }
         }
     }

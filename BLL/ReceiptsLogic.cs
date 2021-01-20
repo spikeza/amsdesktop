@@ -59,6 +59,7 @@ namespace AMSDesktop.BLL
             {
                 ApartmentName = Global.CurrentApartment.ApartmentName,
                 ApartmentAddress = Global.CurrentApartment.Address,
+                TaxId = Global.CurrentApartment.TaxId,
                 ReceiptNo = receipt.ReceiptNo,
                 RoomNo = receipt.Invoice.Room.RoomNo,
                 MonthNo = receipt.Invoice.MonthNo,

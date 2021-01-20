@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using AMSDesktop.BLL;
+using System.ComponentModel;
 
 namespace AMSDesktop.UI.Reporting
 {
@@ -57,6 +58,8 @@ namespace AMSDesktop.UI.Reporting
             {
                 string reportMonth = cbbMonth.SelectedItem.ToString();
                 string reportYear = cbbYear.SelectedItem.ToString();
+                int reportMonthNo = cbbMonth.SelectedIndex + 1;
+                int reportYearNo = int.Parse(reportYear) - 543;
                 List<ReportParameter> parameters = new List<ReportParameter>();
                 parameters.Add(new ReportParameter("ApartmentName", Global.CurrentApartment.ApartmentName));
                 parameters.Add(new ReportParameter("ApartmentAddress", Global.CurrentApartment.Address));
@@ -64,10 +67,24 @@ namespace AMSDesktop.UI.Reporting
                 parameters.Add(new ReportParameter("ReportMonth", reportMonth));
                 parameters.Add(cbDeductImproveCost.IsChecked == true ? new ReportParameter("DeductImproveCost", "True") : new ReportParameter("DeductImproveCost", "False"));
                 ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("IncomeSummaryDataSet", new ReceiptsLogic().GetIncomeSummaryRecords(cbbMonth.SelectedIndex + 1, int.Parse(reportYear) - 543, Global.CurrentApartment.ApartmentId));
-                rp.SetReportPath(@".\Reports\IncomeSummary.rdlc");
-                rp.SetParameters(parameters);
-                rp.ShowDialog();
+
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += (o, ea) =>
+                {
+                    rp.SetDataSet("IncomeSummaryDataSet", new ReceiptsLogic().GetIncomeSummaryRecords(reportMonthNo, reportYearNo, Global.CurrentApartment.ApartmentId));
+                };
+
+                worker.RunWorkerCompleted += (o, ea) =>
+                {
+                    rp.SetReportPath(@".\Reports\IncomeSummary.rdlc");
+                    rp.SetParameters(parameters);
+                    rp.ShowDialog();
+                    loadingPanel.IsBusy = false;
+                };
+
+                loadingPanel.IsBusy = true;
+
+                worker.RunWorkerAsync();
             }
             catch (Exception ex)
             {

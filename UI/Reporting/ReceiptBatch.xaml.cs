@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using GreatFriends.ThaiBahtText;
 using Model = AMSDesktop.DAL.Model;
 using AMSDesktop.BLL;
+using System.ComponentModel;
 
 namespace AMSDesktop.UI.Reporting
 {
@@ -61,11 +62,10 @@ namespace AMSDesktop.UI.Reporting
                 int reportYear = int.Parse(cbbYear.SelectedItem.ToString());
                 DateTime fromDate = new DateTime(reportYear - 543, reportMonth, 1);
                 DateTime toDate = fromDate.AddMonths(1).AddDays(-1);
-
-                List<Model.Receipt> receipts = new ReceiptsLogic().GetReceipts(fromDate, toDate, Global.CurrentApartment.ApartmentId);
                 List<Model.ReceiptForPrinting> printReceipts = new List<Model.ReceiptForPrinting>();
+                ReportPreviewer rp = new ReportPreviewer();
 
-                string reportPath = @".\Reports\ReceiptBatch.rdlc";
+                string reportPath = @".\Reports\Receipt.rdlc";
 
                 Receipt.DeductImproveCostComfirmBox confirmBox = new Receipt.DeductImproveCostComfirmBox();
                 confirmBox.WindowStartupLocation = WindowStartupLocation.Manual;
@@ -73,26 +73,39 @@ namespace AMSDesktop.UI.Reporting
                 confirmBox.Left = Mouse.GetPosition(null).X;
                 if (confirmBox.ShowDialog() == false)
                 {
-                    reportPath = @".\Reports\ReceiptBatchDeductImproveCost.rdlc";
+                    reportPath = @".\Reports\ReceiptDeductImproveCost.rdlc";
                     deductImproveCost = true;
                 }
 
-                foreach (var r in receipts)
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += (o, ea) =>
                 {
-                    List<Model.ReceiptForPrinting> printedReceipt = new ReceiptsLogic().GetReceiptForPrinting(r);
-                    if (deductImproveCost)
+                    List<Model.Receipt> receipts = new ReceiptsLogic().GetReceipts(fromDate, toDate, Global.CurrentApartment.ApartmentId);
+                    foreach (var r in receipts)
                     {
-                        foreach (var pr in printedReceipt)
+                        List<Model.ReceiptForPrinting> printedReceipt = new ReceiptsLogic().GetReceiptForPrinting(r);
+                        if (deductImproveCost)
                         {
-                            pr.GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(Convert.ToDecimal(pr.GrandTotal) - pr.ImproveCost);
+                            foreach (var pr in printedReceipt)
+                            {
+                                pr.GrandTotalText = ThaiBahtTextUtil.ThaiBahtText(Convert.ToDecimal(pr.GrandTotal) - pr.ImproveCost);
+                            }
                         }
+                        printReceipts.AddRange(printedReceipt);
                     }
-                    printReceipts.AddRange(printedReceipt);
-                }
-                ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("ReceiptDataSet", printReceipts);
-                rp.SetReportPath(reportPath);
-                rp.ShowDialog();
+                };
+
+                worker.RunWorkerCompleted += (o, ea) =>
+                {
+                    rp.SetDataSet("ReceiptDataSet", printReceipts);
+                    rp.SetReportPath(reportPath);
+                    rp.ShowDialog();
+                    loadingPanel.IsBusy = false;
+                };
+
+                loadingPanel.IsBusy = true;
+
+                worker.RunWorkerAsync();
             }
             catch (Exception ex)
             {

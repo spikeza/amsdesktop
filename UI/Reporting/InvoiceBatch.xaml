@@ -4,11 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AMSDesktop.UI.Reporting"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Style="{StaticResource FontStyle}"
         Title="พิมพ์แจ้งหนี้ทั้งหมด" Height="200" Width="300">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
+            <WrapPanel HorizontalAlignment="Center">
+                <xctk:BusyIndicator IsBusy="False" Name="loadingPanel" BusyContent="กรุณารอซักครู่ ..." >
+                    <ContentControl/>
+                </xctk:BusyIndicator>
+            </WrapPanel>
             <WrapPanel Margin="20, 20, 0, 0">
                 <Label Content="เดือน" Width="50"/>
                 <ComboBox Name="cbbMonth" Width="150"/>

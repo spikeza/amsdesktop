@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Model = AMSDesktop.DAL.Model;
 using AMSDesktop.BLL;
+using System.ComponentModel;
 
 namespace AMSDesktop.UI.Reporting
 {
@@ -61,39 +62,52 @@ namespace AMSDesktop.UI.Reporting
                 List<Model.IncomeReportRecord> reportDataSet = new List<Model.IncomeReportRecord>();
                 DateTime fromDate = new DateTime(int.Parse(reportYear) - 543, cbbMonth.SelectedIndex + 1, 1);
                 DateTime toDate = fromDate.AddMonths(1).AddDays(-1);
+                bool isDeductImproveCost = Convert.ToBoolean(cbDeductImproveCost.IsChecked);
+                ReportPreviewer rp = new ReportPreviewer();
 
                 List<ReportParameter> parameters = new List<ReportParameter>();
                 parameters.Add(new ReportParameter("ReportYear", reportYear));
                 parameters.Add(new ReportParameter("ReportMonth", reportMonth));
 
-                List<Model.Invoice> invoices = new InvoicesLogic().GetInvoices(fromDate, toDate, Global.CurrentApartment.ApartmentId);
-                foreach (var invoice in invoices)
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += (o, ea) =>
                 {
-                    Decimal electricCost = invoice.EUsedUnit * invoice.EUnit;
-                    Decimal waterCost = invoice.WUsedUnit * invoice.WUnit;
-                    Decimal total = electricCost + waterCost + invoice.TelCost + invoice.Room.MonthCost + invoice.ImproveCost;
-
-                    Model.IncomeReportRecord rec = new Model.IncomeReportRecord()
+                    List<Model.Invoice> invoices = new InvoicesLogic().GetInvoices(fromDate, toDate, Global.CurrentApartment.ApartmentId);
+                    foreach (var invoice in invoices)
                     {
-                        RoomNo = invoice.Room.RoomNo,
-                        ContactName = invoice.Room.Customer.ContactName,
-                        MonthName = reportYear,
-                        ElectricCost = electricCost,
-                        WaterCost = waterCost,
-                        TelephoneCost = invoice.TelCost,
-                        MonthCost = invoice.Room.MonthCost,
-                        ImproveCost = cbDeductImproveCost.IsChecked == true ? 0 : invoice.ImproveCost,
-                        Total = cbDeductImproveCost.IsChecked == true ? (total - invoice.ImproveCost) : total
-                    };
+                        Decimal electricCost = invoice.EUsedUnit * invoice.EUnit;
+                        Decimal waterCost = invoice.WUsedUnit * invoice.WUnit;
+                        Decimal total = electricCost + waterCost + invoice.TelCost + invoice.Room.MonthCost + invoice.ImproveCost;
 
-                    reportDataSet.Add(rec);
-                }
+                        Model.IncomeReportRecord rec = new Model.IncomeReportRecord()
+                        {
+                            RoomNo = invoice.Room.RoomNo,
+                            ContactName = invoice.Room.Customer.ContactName,
+                            MonthName = reportYear,
+                            ElectricCost = electricCost,
+                            WaterCost = waterCost,
+                            TelephoneCost = invoice.TelCost,
+                            MonthCost = invoice.Room.MonthCost,
+                            ImproveCost = isDeductImproveCost ? 0 : invoice.ImproveCost,
+                            Total = isDeductImproveCost ? (total - invoice.ImproveCost) : total
+                        };
 
-                ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("IncomeReportDataSet", reportDataSet);
-                rp.SetReportPath(@".\Reports\IncomeReport.rdlc");
-                rp.SetParameters(parameters);
-                rp.ShowDialog();
+                        reportDataSet.Add(rec);
+                    }
+                    rp.SetDataSet("IncomeReportDataSet", reportDataSet);
+                };
+
+                worker.RunWorkerCompleted += (o, ea) =>
+                {
+                    rp.SetReportPath(@".\Reports\IncomeReport.rdlc");
+                    rp.SetParameters(parameters);
+                    rp.ShowDialog();
+                    loadingPanel.IsBusy = false;
+                };
+
+                loadingPanel.IsBusy = true;
+
+                worker.RunWorkerAsync();
             }
             catch (Exception ex)
             {

@@ -49,7 +49,6 @@ namespace AMSDesktop.UI.Invoice
             _invoice = invoice;
             PopulateRoomNoDropDown();
             PopulateInvoiceData(_invoice);
-            EnablePrinting(false);
         }
 
         private void PopulateRoomNoDropDown()

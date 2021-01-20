@@ -25,8 +25,8 @@ namespace AMSDesktop.UI.Receipt
         public Receipt()
         {
             InitializeComponent();
-            dpFromDate.SelectedDate = DateTime.Now.AddMonths(-6);
-            dpToDate.SelectedDate = DateTime.Now;
+            dpFromDate.SelectedDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            dpToDate.SelectedDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
             dgReceipts.ItemsSource = new ReceiptsLogic().GetReceiptsForDataGrid(dpFromDate.SelectedDate.Value, dpToDate.SelectedDate.Value, Global.CurrentApartment.ApartmentId);
         }
 

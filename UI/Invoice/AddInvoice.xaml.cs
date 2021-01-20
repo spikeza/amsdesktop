@@ -374,7 +374,7 @@ namespace AMSDesktop.UI.Invoice
             if (e.Key == Key.Enter && tbxElectricEnd.Text != "")
             {
                 CalculateAllAmounts();
-                tbxTelephoneAmount.Focus();
+                tbxImproveCost.Focus();
             }
         }
 

@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Model = AMSDesktop.DAL.Model;
 using AMSDesktop.BLL;
+using System.ComponentModel;
 
 namespace AMSDesktop.UI.Reporting
 {
@@ -60,18 +61,31 @@ namespace AMSDesktop.UI.Reporting
                 int reportYear = int.Parse(cbbYear.SelectedItem.ToString());
                 DateTime fromDate = new DateTime(reportYear - 543, reportMonth, 1);
                 DateTime toDate = fromDate.AddMonths(1).AddDays(-1);
-
-                List<Model.Invoice> invoices = new InvoicesLogic().GetInvoices(fromDate, toDate, Global.CurrentApartment.ApartmentId);
                 List<Model.InvoiceForPrinting> printInvoices = new List<Model.InvoiceForPrinting>();
-
-                foreach (var inv in invoices)
-                {
-                    printInvoices.AddRange(new InvoicesLogic().GetInvoiceForPrinting(inv));
-                }
                 ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("InvoiceDataSet", printInvoices);
-                rp.SetReportPath(@".\Reports\InvoiceBatch.rdlc");
-                rp.ShowDialog();
+
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += (o, ea) =>
+                {
+                    List<Model.Invoice> invoices = new InvoicesLogic().GetInvoices(fromDate, toDate, Global.CurrentApartment.ApartmentId);
+
+                    foreach (var inv in invoices)
+                    {
+                        printInvoices.AddRange(new InvoicesLogic().GetInvoiceForPrinting(inv));
+                    }
+                };
+
+                worker.RunWorkerCompleted += (o, ea) =>
+                {
+                    rp.SetDataSet("InvoiceDataSet", printInvoices);
+                    rp.SetReportPath(@".\Reports\Invoice.rdlc");
+                    rp.ShowDialog();
+                    loadingPanel.IsBusy = false;
+                };
+
+                loadingPanel.IsBusy = true;
+
+                worker.RunWorkerAsync();
             }
             catch (Exception ex)
             {

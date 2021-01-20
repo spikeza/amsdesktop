@@ -10,6 +10,7 @@ namespace AMSDesktop.DAL.Model
     {
         public string ApartmentName { get; set; }
         public string ApartmentAddress { get; set; }
+        public string TaxId { get; set; }
         public string ReceiptNo { get; set; }
         public string RoomNo { get; set; }
         public long MonthNo { get; set; }

@@ -47,7 +47,6 @@ namespace AMSDesktop.UI.Receipt
             _receipt = receipt;
             PopulateRoomNoDropDown();
             PopulateReceiptData(_receipt);
-            EnablePrinting(false);
         }
 
         private void PopulateRoomNoDropDown()
@@ -160,7 +159,7 @@ namespace AMSDesktop.UI.Receipt
                 }
 
                 ReportPreviewer rp = new ReportPreviewer();
-                rp.SetDataSet("ReceiptDataSet", new ReceiptsLogic().GetReceiptForPrinting(_receipt));
+                rp.SetDataSet("ReceiptDataSet", receipts);
                 rp.SetReportPath(reportPath); 
                 rp.ShowDialog();
             }
